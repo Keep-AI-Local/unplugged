@@ -1,0 +1,9 @@
+Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms
+
+The model file in this folder (gemma-3-1b-it-qat-Q4_0.gguf) is Google's Gemma 3 1B instruction-tuned model
+(quantization-aware trained, Q4_0), as packaged in GGUF format by the llama.cpp project (ggml-org) on Hugging Face:
+https://huggingface.co/ggml-org/gemma-3-1b-it-qat-GGUF   (unmodified; SHA-256 ef60e4e91a738c99ae9976b050657dfe68a4007a0ccca121b55ec0c413dccd58)
+
+Use of Gemma is subject to the use restrictions in Section 3.2 of the Gemma Terms of Use, including the
+Gemma Prohibited Use Policy (ai.google.dev/gemma/prohibited_use_policy), a copy of which is included as
+GEMMA_PROHIBITED_USE_POLICY.txt. A full copy of the Terms is included as GEMMA_TERMS_OF_USE.txt.

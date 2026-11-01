@@ -1,0 +1,186 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Unplugged.App.App"
+             RequestedThemeVariant="Dark">
+
+    <Application.Resources>
+        <SolidColorBrush x:Key="BgBrush" Color="#0E1014" />
+        <SolidColorBrush x:Key="PanelBrush" Color="#161A21" />
+        <SolidColorBrush x:Key="Panel2Brush" Color="#1E232C" />
+        <SolidColorBrush x:Key="LineBrush" Color="#2A303B" />
+        <SolidColorBrush x:Key="TextBrush" Color="#ECEEF1" />
+        <SolidColorBrush x:Key="MutedBrush" Color="#9CA5B2" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#5EEAD4" />
+        <SolidColorBrush x:Key="AccentDimBrush" Color="#143430" />
+        <SolidColorBrush x:Key="OfflineBrush" Color="#F87171" />
+        <SolidColorBrush x:Key="OfflineDimBrush" Color="#3A1A1C" />
+        <SolidColorBrush x:Key="GoodBrush" Color="#4ADE80" />
+        <SolidColorBrush x:Key="UserBubbleBrush" Color="#21405A" />
+        <StreamGeometry x:Key="LockIcon">M6 10V7a6 6 0 0 1 12 0v3h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h1zm2 0h8V7a4 4 0 0 0-8 0v3z</StreamGeometry>
+        <!-- Material Design icons (Apache-2.0): Wi-Fi, airplane, network cable, chip -->
+        <StreamGeometry x:Key="WifiIcon">M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z</StreamGeometry>
+        <StreamGeometry x:Key="PlaneIcon">M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z</StreamGeometry>
+        <StreamGeometry x:Key="CableIcon">M7 2v4H5v6l3 3v7h8v-7l3-3V6h-2V2h-2v4h-6V2H7zm0 6h10v3.17l-3 3V20h-4v-5.83l-3-3V8z</StreamGeometry>
+        <!-- "connected by cable" symbols: Windows (screen), GNOME (linked boxes), KDE (network socket) -->
+        <StreamGeometry x:Key="WiredMonitorIcon">M21 2H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h7v2H8v2h8v-2h-2v-2h7c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H3V4h18v12z</StreamGeometry>
+        <StreamGeometry x:Key="WiredLanIcon">M13 22h8v-7h-3v-4h-5V9h3V2H8v7h3v2H6v4H3v7h8v-7H8v-2h8v2h-3z</StreamGeometry>
+        <StreamGeometry x:Key="WiredJackIcon">M4 5h16v11h-4v2h-2v2h-4v-2H8v-2H4V5zm2 2v7h4v2h4v-2h4V7H6zm2 2h2v3H8V9zm3 0h2v3h-2V9zm3 0h2v3h-2V9z</StreamGeometry>
+        <StreamGeometry x:Key="ChipIcon">M9 3h2v2h2V3h2v2h2a2 2 0 0 1 2 2v2h2v2h-2v2h2v2h-2v2a2 2 0 0 1-2 2h-2v2h-2v-2h-2v2H9v-2H7a2 2 0 0 1-2-2v-2H3v-2h2v-2H3V9h2V7a2 2 0 0 1 2-2h2V3zm-2 4v10h10V7H7zm2 2h6v6H9V9z</StreamGeometry>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <Style Selector="Window">
+            <Setter Property="Background" Value="{StaticResource BgBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="FontFamily" Value="fonts:Inter#Inter" />
+        </Style>
+
+        <Style Selector="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="LineHeight" Value="24" />
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+        <Style Selector="TextBlock.h1">
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="LineHeight" Value="40" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+        <Style Selector="TextBlock.h2">
+            <Setter Property="FontSize" Value="19" />
+            <Setter Property="LineHeight" Value="28" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,18,0,6" />
+        </Style>
+        <Style Selector="TextBlock.lead">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="LineHeight" Value="28" />
+        </Style>
+        <Style Selector="TextBlock.muted">
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+        </Style>
+        <Style Selector="TextBlock.small">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="LineHeight" Value="19" />
+        </Style>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="LineHeight" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="LetterSpacing" Value="1.2" />
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="Margin" Value="0,14,0,4" />
+        </Style>
+        <Style Selector="TextBlock.privacy">
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- the "privacy line" card used on every tour screen -->
+        <Style Selector="Border.privacy">
+            <Setter Property="Background" Value="{StaticResource AccentDimBrush}" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="14,10" />
+            <Setter Property="Margin" Value="0,18,0,0" />
+        </Style>
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="16" />
+        </Style>
+        <!-- big, prominent explainer cards -->
+        <Style Selector="Border.feature">
+            <Setter Property="Background" Value="{StaticResource AccentDimBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="Padding" Value="18,16" />
+        </Style>
+        <Style Selector="TextBlock.featureTitle">
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style Selector="TextBlock.featureAnswer">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="LineHeight" Value="32" />
+            <Setter Property="FontWeight" Value="Black" />
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Margin" Value="0,10,0,6" />
+        </Style>
+        <Style Selector="TextBlock.featureBody">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="LineHeight" Value="23" />
+        </Style>
+
+        <!-- numbered step-by-step guide -->
+        <Style Selector="Border.stepNum">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
+        <Style Selector="TextBlock.stepText">
+            <Setter Property="FontSize" Value="19" />
+            <Setter Property="LineHeight" Value="29" />
+        </Style>
+        <Style Selector="PathIcon.stepPic">
+            <Setter Property="Width" Value="34" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+
+        <Style Selector="PathIcon.lock">
+            <Setter Property="Data" Value="{StaticResource LockIcon}" />
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="16,9" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Foreground" Value="#06201C" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#8AF3E3" />
+            <Setter Property="Foreground" Value="#06201C" />
+        </Style>
+        <Style Selector="Button.link">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Padding" Value="4,2" />
+        </Style>
+        <Style Selector="Button.chip">
+            <Setter Property="Background" Value="{StaticResource Panel2Brush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Margin" Value="0,0,8,8" />
+        </Style>
+
+        <Style Selector="ProgressBar">
+            <Setter Property="Foreground" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Background" Value="{StaticResource Panel2Brush}" />
+            <Setter Property="MinHeight" Value="8" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+    </Application.Styles>
+</Application>

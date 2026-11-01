@@ -1,0 +1,586 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Unplugged.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="Unplugged.App.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        x:Name="Root"
+        Icon="/Assets/avalonia-logo.ico"
+        Width="1240" Height="820" MinWidth="980" MinHeight="640"
+        WindowStartupLocation="CenterScreen"
+        Title="Unplugged · AI that lives on your computer">
+
+    <Window.Resources>
+        <DataTemplate x:Key="GuideStepTemplate" x:DataType="vm:GuideStep">
+            <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,18">
+                <Border Grid.Column="0" Classes="stepNum">
+                    <TextBlock Text="{Binding Number}" FontSize="19" FontWeight="Bold" Foreground="#06201C" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Grid.Column="1" Margin="16,4,0,0">
+                    <TextBlock Classes="stepText" Text="{Binding Text}" />
+                    <PathIcon Classes="stepPic" Data="{StaticResource WifiIcon}" IsVisible="{Binding ShowWifi}" />
+                    <PathIcon Classes="stepPic" Data="{StaticResource PlaneIcon}" IsVisible="{Binding ShowPlane}" />
+                    <PathIcon Classes="stepPic" Data="{StaticResource CableIcon}" IsVisible="{Binding ShowCable}" />
+                    <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,12,0,0" IsVisible="{Binding ShowBoth}">
+                        <Border Background="{StaticResource Panel2Brush}" CornerRadius="10" Padding="20,12">
+                            <StackPanel Spacing="6">
+                                <PathIcon Data="{StaticResource WifiIcon}" Width="38" Height="38" Foreground="{StaticResource AccentBrush}" />
+                                <TextBlock Text="On Wi-Fi" FontSize="14" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{StaticResource Panel2Brush}" CornerRadius="10" Padding="20,12" IsVisible="{Binding !WiredNone}">
+                            <StackPanel Spacing="6">
+                                <PathIcon Data="{StaticResource WiredMonitorIcon}" Width="38" Height="38" Foreground="{StaticResource AccentBrush}" IsVisible="{Binding WiredMonitor}" />
+                                <PathIcon Data="{StaticResource WiredLanIcon}" Width="38" Height="38" Foreground="{StaticResource AccentBrush}" IsVisible="{Binding WiredLan}" />
+                                <PathIcon Data="{StaticResource WiredJackIcon}" Width="38" Height="38" Foreground="{StaticResource AccentBrush}" IsVisible="{Binding WiredJack}" />
+                                <TextBlock Text="On a cable" FontSize="14" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                        <TextBlock IsVisible="{Binding WiredNone}" VerticalAlignment="Center" MaxWidth="320" FontSize="14" Classes="muted"
+                                   Text="Using a cable? There's usually no symbol for it up there. Just unplug the cable (see the box below)." />
+                    </StackPanel>
+                    <TextBlock Classes="muted" Margin="0,8,0,0" FontSize="14" Text="{Binding Tip}" IsVisible="{Binding HasTip}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- ================= HEADER ================= -->
+        <Border Grid.Row="0" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1" Padding="24,14">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                    <Border CornerRadius="8" Padding="12,6" Background="{StaticResource Panel2Brush}" IsVisible="{Binding !IsLoading}">
+                        <TextBlock Text="{Binding RunningOnShort}" FontSize="13" />
+                    </Border>
+                    <Border CornerRadius="8" Padding="12,6" Background="{StaticResource Panel2Brush}" IsVisible="{Binding IsOnline}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Ellipse Width="10" Height="10" Fill="{StaticResource MutedBrush}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding NetworkBadge}" FontSize="13" FontWeight="SemiBold" />
+                        </StackPanel>
+                    </Border>
+                    <Border CornerRadius="8" Padding="12,6" Background="{StaticResource OfflineDimBrush}" BorderBrush="{StaticResource OfflineBrush}" BorderThickness="1" IsVisible="{Binding IsOffline}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Ellipse Width="10" Height="10" Fill="{StaticResource OfflineBrush}" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding NetworkBadge}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource OfflineBrush}" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="14" VerticalAlignment="Center">
+                    <TextBlock Text="UNPLUGGED" FontSize="20" FontWeight="Black" LetterSpacing="3" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center" />
+                    <TextBlock Text="An AI that lives entirely on your computer" Classes="muted" VerticalAlignment="Center" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- ================= BODY ================= -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,390">
+
+            <!-- LEFT: the tour -->
+            <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="40,28,32,16" IsVisible="{Binding !IsLoading}">
+
+                <!-- Row 0: intros for the screens that show the chat -->
+                <StackPanel Grid.Row="0">
+
+                    <!-- Step 2 (index 1): Say hi -->
+                    <StackPanel IsVisible="{Binding IsStep1}">
+                        <TextBlock Classes="h1" Text="Say hi." />
+                        <TextBlock Classes="lead" Text="Ask it anything, or tap a suggestion below. Keep an eye on the panel on the right: that's your own computer doing the work." />
+                        <Border Classes="privacy">
+                            <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" /><TextBlock Grid.Column="1" Classes="privacy" Text="Type anything, even something you'd never type into a website. Nobody else will ever see it." /></Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Step 4 (index 3): Still here -->
+                    <Panel IsVisible="{Binding IsStep3}"><ScrollViewer x:Name="Step4Scroll" MaxHeight="400">
+                        <StackPanel>
+                            <TextBlock Classes="h1" Text="Still here." />
+                            <Border Background="{StaticResource OfflineDimBrush}" BorderBrush="{StaticResource OfflineBrush}" BorderThickness="1" CornerRadius="10" Padding="16,10" IsVisible="{Binding IsOffline}" Margin="0,0,0,10">
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Your internet is OFF, and the AI is still answering. Same AI, same conversation. Ask it something new." />
+                            </Border>
+                            <TextBlock Classes="lead" IsVisible="{Binding IsOnline}" Text="(You're still online, but nothing here uses the connection. Try it offline whenever you're ready.)" />
+                            <Grid ColumnDefinitions="*,16,*" Margin="0,8,0,0">
+                                <Border Grid.Column="0" Classes="card">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold" FontSize="16" Text="It's not magic. It's your hardware." />
+                                        <TextBlock Classes="small" Margin="0,6,0,0" Text="Watch the graph on the right jump while the AI writes and go quiet when it stops. That spike is the AI. Every word is calculated right here, by your own computer, from start to finish." />
+                                        <TextBlock Classes="small muted" Margin="0,8,0,0" Text="{Binding SystemMonitorHowTo, StringFormat='Check with your own tools: {0}'}" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="2" Classes="card">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold" FontSize="16" Text="It doesn't record you." />
+                                        <TextBlock Classes="small" Margin="0,6,0,0" Text="The AI is a read-only file. It doesn't write down what you type, doesn't learn from you, and doesn't know who you are or why you're asking. Check its fingerprint again and see that nothing changed:" />
+                                        <WrapPanel Margin="0,10,0,0" ItemSpacing="8" LineSpacing="8">
+                                            <Button Classes="primary" Content="Check the fingerprint" Command="{Binding CheckFingerprintCommand}" />
+                                            <Button Content="Show me the file" Command="{Binding ShowModelFileCommand}" />
+                                        </WrapPanel>
+                                        <TextBlock Classes="small" Margin="0,8,0,0" Foreground="{StaticResource GoodBrush}" Text="{Binding FingerprintCheckResult}" IsVisible="{Binding FingerprintCheckResult, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <Border Classes="privacy">
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" /><TextBlock Grid.Column="1" Classes="privacy" Text="No connection. No company. No copy. Just you and your computer." /></Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer></Panel>
+
+                    <!-- Just chat -->
+                    <StackPanel IsVisible="{Binding JustChatMode}">
+                        <TextBlock Classes="h1" Text="Just chat." />
+                        <TextBlock Classes="lead" Text="It's all yours. Online or offline, everything stays on this computer." />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Row 1: the chat, OR the long screens -->
+                <Grid Grid.Row="1" RowDefinitions="*,Auto,Auto" IsVisible="{Binding ShowChat}" Margin="0,16,0,0">
+                    <Border Grid.Row="0" Classes="card" Padding="0">
+                        <ScrollViewer x:Name="ChatScroll" Padding="18,14">
+                            <StackPanel>
+                                <TextBlock Classes="muted" HorizontalAlignment="Center" Margin="0,30" Text="Your conversation will appear here. It exists only in this computer's temporary memory."
+                                           IsVisible="{Binding !Messages.Count}" />
+                                <ItemsControl ItemsSource="{Binding Messages}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:ChatMessage">
+                                            <StackPanel Margin="0,0,0,14">
+                                                <TextBlock Text="{Binding Who}" Classes="label" Margin="0,0,0,4" />
+                                                <Border CornerRadius="10" Padding="14,10" Background="{StaticResource UserBubbleBrush}" IsVisible="{Binding FromUser}" HorizontalAlignment="Left" MaxWidth="640">
+                                                    <SelectableTextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="15" LineHeight="23" />
+                                                </Border>
+                                                <Border CornerRadius="10" Padding="14,10" Background="{StaticResource Panel2Brush}" IsVisible="{Binding FromAi}" HorizontalAlignment="Left" MaxWidth="720">
+                                                    <StackPanel>
+                                                        <SelectableTextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="15" LineHeight="23" />
+                                                        <TextBlock Text="{Binding Footnote}" Classes="small muted" Margin="0,8,0,0" IsVisible="{Binding Footnote, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding ChatSuggestions}" Margin="0,12,0,0">
+                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Button Classes="chip" Content="{Binding}" CommandParameter="{Binding}"
+                                        Command="{Binding #Root.((vm:MainViewModel)DataContext).UseSuggestionCommand}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto,Auto,Auto">
+                        <TextBox x:Name="ChatInput" Grid.Column="0" Text="{Binding InputText}" PlaceholderText="Type a message… (Enter to send)" AcceptsReturn="True" TextWrapping="Wrap" MaxHeight="120" FontSize="15" />
+                        <Button Grid.Column="1" Classes="primary" Content="Send" Margin="8,0,0,0" Command="{Binding SendCommand}" VerticalAlignment="Stretch" />
+                        <Button Grid.Column="2" Content="Stop" Margin="8,0,0,0" Command="{Binding StopCommand}" IsVisible="{Binding IsGenerating}" VerticalAlignment="Stretch" />
+                        <Button Grid.Column="3" Content="Forget everything" Margin="8,0,0,0" Command="{Binding ForgetEverythingCommand}" VerticalAlignment="Stretch" ToolTip.Tip="Erase this conversation. It was only ever in this computer's temporary memory." />
+                    </Grid>
+                </Grid>
+
+                <Panel Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding !ShowChat}"><ScrollViewer x:Name="TourScroll">
+                    <StackPanel MaxWidth="820" HorizontalAlignment="Left" Margin="0,0,18,0">
+
+                        <!-- ===== Step 1: There's an AI inside ===== -->
+                        <StackPanel IsVisible="{Binding IsStep0}">
+                            <TextBlock Classes="h1" Text="There's an AI inside this app." />
+                            <TextBlock Classes="lead" Text="No account. No subscription. No server. The whole AI is one file, and it's sitting on your computer right now:" />
+                            <Border Classes="card" Margin="0,16,0,0">
+                                <StackPanel Spacing="4">
+                                    <TextBlock FontFamily="monospace" FontSize="17" FontWeight="SemiBold" Text="{Binding ModelFileName}" />
+                                    <TextBlock Classes="muted" Text="{Binding ModelSizeText, StringFormat='{}{0}. That file is the whole thing.'}" />
+                                    <TextBlock Margin="0,8,0,0" Text="{Binding ModelName, StringFormat='{}{0}: a free, open AI model made by Google that anyone can download.'}" />
+                                    <TextBlock Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" Text="{Binding RunningOnText}" />
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Classes="lead" Margin="0,18,0,0" Text="Here's the plan. First, you'll chat with it. Then you'll turn off your internet yourself, check in your browser that it's really off, and see that the AI keeps right on working." />
+                            <TextBlock Classes="muted" Margin="0,10,0,0" Text="Be honest with yourself as you go: this is a small model, and it's not as smart as the giant AI services in the cloud. That's not the point. The point is that it's here, it's yours, and it needs nothing from anyone." />
+                            <Border Classes="privacy">
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" /><TextBlock Grid.Column="1" Classes="privacy" Text="It lives here, on your computer. Not in a data center." /></Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== Step 3: Unplug it ===== -->
+                        <StackPanel IsVisible="{Binding IsStep2}">
+                            <TextBlock Classes="h1" Text="Now unplug it." />
+                            <TextBlock Classes="lead" Text="You're going to turn off your internet yourself, so you know nothing is being faked. It's easy, it takes about ten seconds, and we'll show you how to turn it back on at the end." />
+
+                            <!-- PART A: turn it off -->
+                            <Border Classes="card" Margin="0,20,0,0" Padding="22,20">
+                                <StackPanel>
+                                    <TextBlock Classes="label" Margin="0" Text="PART A" />
+                                    <TextBlock Classes="h2" Margin="0,2,0,2" Text="{Binding GuideTitle}" />
+                                    <TextBlock Classes="small muted" Margin="0,0,0,16" Text="{Binding GuideFor}" />
+                                    <ItemsControl ItemsSource="{Binding Guide.OffSteps}" ItemTemplate="{StaticResource GuideStepTemplate}" />
+
+                                    <Border Background="{StaticResource Panel2Brush}" CornerRadius="10" Padding="16,14" Margin="0,6,0,0">
+                                        <Grid ColumnDefinitions="Auto,*">
+                                            <PathIcon Grid.Column="0" Data="{StaticResource CableIcon}" Width="30" Height="30" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Top" Margin="0,2,14,0" />
+                                            <StackPanel Grid.Column="1">
+                                                <TextBlock FontWeight="SemiBold" FontSize="16" Text="Plugged in with a cable instead of Wi-Fi?" />
+                                                <TextBlock Margin="0,4,0,0" Text="Look at the side or back of your computer for a cable with a plug a bit wider than a phone charger, with a little clip on it. Press the clip down and gently pull the plug out. That's all." />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                    <Button Margin="0,14,0,0" Content="Or: let Windows open the Airplane-mode switch for me" Command="{Binding OpenAirplaneSettingsCommand}" IsVisible="{Binding IsWindows}" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- live result -->
+                            <Border Classes="card" Margin="0,14,0,0" Padding="18,14" IsVisible="{Binding IsOnline}">
+                                <Grid ColumnDefinitions="Auto,*">
+                                    <Ellipse Width="14" Height="14" Fill="{StaticResource MutedBrush}" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                    <TextBlock Grid.Column="1" FontSize="17" VerticalAlignment="Center" Text="Still connected. Waiting for you to follow the steps above…" />
+                                </Grid>
+                            </Border>
+                            <Border Margin="0,14,0,0" Background="{StaticResource OfflineDimBrush}" BorderBrush="{StaticResource OfflineBrush}" BorderThickness="2" CornerRadius="12" Padding="18,14" IsVisible="{Binding IsOffline}">
+                                <StackPanel>
+                                    <TextBlock FontSize="22" FontWeight="Bold" Foreground="{StaticResource OfflineBrush}" Text="Done! You're offline." />
+                                    <TextBlock FontSize="16" Margin="0,4,0,0" Text="This computer is no longer connected to the internet. Now let's prove it." />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- PART B: prove it -->
+                            <Border Classes="card" Margin="0,14,0,0" Padding="22,20">
+                                <StackPanel>
+                                    <TextBlock Classes="label" Margin="0" Text="PART B" />
+                                    <TextBlock Classes="h2" Margin="0,2,0,14" Text="Prove it with your web browser" />
+                                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,16">
+                                        <Border Grid.Column="0" Classes="stepNum"><TextBlock Text="1" FontSize="19" FontWeight="Bold" Foreground="#06201C" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+                                        <StackPanel Grid.Column="1" Margin="16,4,0,0">
+                                            <TextBlock Classes="stepText" Text="Click this button. Your web browser will open and try to load a website." />
+                                            <Button Classes="primary" Margin="0,10,0,0" FontSize="16" Content="Open a website in my browser" Command="{Binding OpenProofWebsiteCommand}" />
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid ColumnDefinitions="Auto,*" Margin="0,0,0,16">
+                                        <Border Grid.Column="0" Classes="stepNum"><TextBlock Text="2" FontSize="19" FontWeight="Bold" Foreground="#06201C" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+                                        <TextBlock Grid.Column="1" Classes="stepText" Margin="16,4,0,0" Text="The website should NOT load. You'll see a message like &quot;No internet&quot; or &quot;You're not connected&quot;. That's good: that's your proof." />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="Auto,*">
+                                        <Border Grid.Column="0" Classes="stepNum"><TextBlock Text="3" FontSize="19" FontWeight="Bold" Foreground="#06201C" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border>
+                                        <TextBlock Grid.Column="1" Classes="stepText" Margin="16,4,0,0" Text="Come back to this window and click the green &quot;I'm offline. Continue&quot; button at the bottom-right." />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Expander Margin="0,14,0,0" HorizontalAlignment="Stretch" Header="Worried? Here's how to turn your internet back on (you can do it any time)">
+                                <ItemsControl ItemsSource="{Binding Guide.OnSteps}" ItemTemplate="{StaticResource GuideStepTemplate}" />
+                            </Expander>
+
+                            <TextBlock Classes="small muted" Margin="0,18,0,0" Text="This app never connects to the internet. It doesn't even check: the badge simply reads your computer's own network settings." />
+                            <Border Classes="privacy">
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" /><TextBlock Grid.Column="1" Classes="privacy" Text="With the internet off, there's physically no way for your words to leave. That's what real privacy looks like." /></Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== Step 5: What your computer could do ===== -->
+                        <StackPanel IsVisible="{Binding IsStep4}">
+                            <TextBlock Classes="h1" Text="What your computer could do with no internet." />
+                            <TextBlock Classes="lead" Text="{Binding TierMessage}" />
+
+                            <TextBlock Classes="h2" Text="It can be anything you want it to be." />
+                            <TextBlock Text="The AI you just used is one file. Swap in a different file and the same computer becomes a different AI: one that's great at coding, one that writes stories, one that speaks Spanish, one that can read images. Thousands of them are free, shared by an open community." />
+
+                            <TextBlock Classes="h2" Text="It's not just words: pictures and video, too." />
+                            <TextBlock Text="{Binding MediaTierMessage}" />
+                            <TextBlock Classes="muted" Margin="0,8,0,0" Text="Image and video generation are the hardest jobs there are for a computer. They won't work on every machine today, and most need a good graphics card. A few years ago they needed a data center. They're on the same path as the text AI you just used, and in the future they'll run on even the most modest computer, privately, with no internet, if we keep it legal and open." />
+
+                            <TextBlock Classes="h2" Text="Things people already do with local AI, offline" />
+                            <ItemsControl ItemsSource="{Binding OfflineIdeas}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:OfflineIdea">
+                                        <Border BorderBrush="{StaticResource LineBrush}" BorderThickness="0,0,0,1" Padding="0,8">
+                                            <Grid ColumnDefinitions="*,260">
+                                                <TextBlock Grid.Column="0" Text="{Binding Task}" />
+                                                <TextBlock Grid.Column="1" Classes="small muted" Text="{Binding Hardware}" Margin="16,2,0,0" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Border Classes="privacy">
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" /><TextBlock Grid.Column="1" Classes="privacy" Text="Imagine asking about your health, your money, your marriage or your business, and none of it ever leaving your house." /></Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== Step 6: Why this matters ===== -->
+                        <StackPanel IsVisible="{Binding IsStep5}">
+                            <TextBlock Classes="h1" Text="Why this matters." />
+                            <TextBlock Classes="lead" Text="Let's be honest: the AI you just used is small. It isn't as smart as the big cloud AIs today, and that's okay. That's not the point." />
+
+                            <TextBlock Classes="h2" Text="Look where this is heading" />
+                            <Grid ColumnDefinitions="*,Auto,*,Auto,*" Margin="0,6,0,0">
+                                <Border Grid.Column="0" Classes="card"><StackPanel><TextBlock Classes="label" Margin="0" Text="A FEW YEARS AGO" /><TextBlock Text="AI like this needed a data center." /></StackPanel></Border>
+                                <TextBlock Grid.Column="1" Text="→" FontSize="26" Margin="10,0" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}" />
+                                <Border Grid.Column="2" Classes="card"><StackPanel><TextBlock Classes="label" Margin="0" Text="TODAY" /><TextBlock Text="It runs on your computer, with the internet off." /></StackPanel></Border>
+                                <TextBlock Grid.Column="3" Text="→" FontSize="26" Margin="10,0" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}" />
+                                <Border Grid.Column="4" Classes="card" BorderBrush="{StaticResource AccentBrush}"><StackPanel><TextBlock Classes="label" Margin="0" Text="IN A FEW YEARS" /><TextBlock Text="The same and better, on every ordinary desktop." /></StackPanel></Border>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto,*" Margin="0,10,0,0">
+                                <Border Grid.Column="0" Classes="card"><StackPanel><TextBlock Classes="label" Margin="0" Text="IMAGES AND VIDEO, TODAY" /><TextBlock Text="Need a strong graphics card, like a gaming PC." /></StackPanel></Border>
+                                <TextBlock Grid.Column="1" Text="→" FontSize="26" Margin="10,0" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}" />
+                                <Border Grid.Column="2" Classes="card" BorderBrush="{StaticResource AccentBrush}"><StackPanel><TextBlock Classes="label" Margin="0" Text="TOMORROW" /><TextBlock Text="Every computer." /></StackPanel></Border>
+                            </Grid>
+
+                            <Border Classes="feature" Margin="0,22,0,0" Padding="22,18">
+                                <StackPanel>
+                                    <TextBlock FontSize="22" LineHeight="30" FontWeight="Bold" Text="Corporations are not the enemy." />
+                                    <TextBlock Classes="lead" Margin="0,8,0,0" Text="Many of them build amazing things. One of them, Google, even gave away the AI inside this app for free." />
+                                    <TextBlock Classes="lead" Margin="0,10,0,0" Text="But they'll want you to believe that the only way to have the AI of the future is to pay them for it, every month, forever." />
+                                    <TextBlock FontSize="24" LineHeight="32" FontWeight="Black" Foreground="{StaticResource AccentBrush}" Margin="0,12,0,0" Text="That is simply not true." />
+                                    <TextBlock Classes="muted" Margin="0,8,0,0" Text="You just watched it run on your own computer, with the internet off." />
+                                    <TextBlock Classes="lead" FontWeight="SemiBold" Margin="0,14,0,0" Text="And local AI will keep getting better, year after year, as long as it's allowed to stay open and free." />
+                                </StackPanel>
+                            </Border>
+
+                            <TextBlock Classes="h2" Text="But only if we protect it" />
+                            <TextBlock Text="That future only happens if open, local AI is still allowed and available when it gets here. Cloud AI is useful, and there's nothing wrong with using it. But owning your own AI is your right to choose. If only a few companies are allowed to make AI, you'll always rent it. Open models mean you can own it." />
+                            <TextBlock Margin="0,10,0,0" Text="If AI only exists on company servers, every thought you share with it is stored on someone else's computer. Local AI is how privacy survives the AI age." />
+
+                            <Border Classes="feature" Margin="0,22,0,0" Padding="22,18" BorderBrush="{StaticResource OfflineBrush}" Background="{StaticResource OfflineDimBrush}">
+                                <StackPanel>
+                                    <TextBlock FontSize="22" LineHeight="30" FontWeight="Bold" Text="Some people will tell you that local AI is dangerous." />
+                                    <TextBlock Classes="lead" Margin="0,8,0,0" Text="Like anything else, it can be used for good or for bad." />
+                                    <TextBlock Classes="lead" Margin="0,10,0,0" Text="But they'll try to tell you it's too dangerous for you to have freedom and complete privacy. Privacy that hasn't existed since the dawn of the internet age." />
+                                    <TextBlock FontSize="24" LineHeight="32" FontWeight="Black" Foreground="{StaticResource OfflineBrush}" Margin="0,12,0,0" Text="Don't let them get away with it." />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Classes="card" Margin="0,22,0,0" Padding="22,18">
+                                <StackPanel>
+                                    <TextBlock FontSize="22" LineHeight="30" FontWeight="Bold" Text="What about data centers?" />
+                                    <TextBlock Classes="lead" Margin="0,8,0,0" Text="People have real concerns about data centers: the electricity and water they use, and what they mean for the towns around them. Those concerns deserve to be taken seriously." />
+                                    <TextBlock Margin="0,10,0,0" Text="But local AI doesn't replace data centers. The AI in this app was trained in one. Today there's simply no other way to train large, capable models, and that work keeps a lot of people employed, including software engineers like me." />
+                                    <TextBlock Margin="0,10,0,0" FontWeight="SemiBold" Text="So this isn't local AI versus data centers. Data centers train the models. Local AI lets you run them on your own terms." />
+                                    <TextBlock Classes="muted" Margin="0,10,0,0" Text="My own guess: as models keep getting more efficient, we'll need fewer data centers in the future, not more. We're just not there yet." />
+                                </StackPanel>
+                            </Border>
+
+                            <TextBlock Classes="h2" Text="And honestly? You don't need this app." />
+                            <TextBlock Text="There's a whole open community already doing all of this, for free, and it's been growing for years. This app was just the proof. On the next screen: where the real thing lives." />
+                            <Border Classes="privacy">
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" /><TextBlock Grid.Column="1" Classes="privacy" Text="Privacy isn't a feature you rent. With local AI, it's simply how it works." /></Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== Step 7: Where to go next ===== -->
+                        <StackPanel IsVisible="{Binding IsStep6}">
+                            <TextBlock Classes="h1" Text="Where to go next." />
+                            <TextBlock Classes="lead" Text="This is the open community that makes local AI possible. These are websites, so first, turn your internet back on. (This app itself still never connects to anything.)" />
+                            <Border Classes="card" Margin="0,14,0,0" Padding="22,18" IsVisible="{Binding IsOffline}">
+                                <StackPanel>
+                                    <TextBlock Classes="h2" Margin="0,0,0,12" Text="{Binding ReconnectTitle}" />
+                                    <ItemsControl ItemsSource="{Binding Guide.OnSteps}" ItemTemplate="{StaticResource GuideStepTemplate}" />
+                                </StackPanel>
+                            </Border>
+                            <Border Classes="card" Margin="0,14,0,0" Padding="16,12" IsVisible="{Binding IsOnline}">
+                                <TextBlock FontSize="16" Foreground="{StaticResource GoodBrush}" FontWeight="SemiBold" Text="You're back online. The links below will work." />
+                            </Border>
+                            <TextBlock Classes="small muted" Margin="0,6,0,10" Text="Each address is written out, so you can write it down or take a photo." />
+                            <ItemsControl ItemsSource="{Binding CommunityLinks}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:CommunityLink">
+                                        <Border Classes="card" Margin="0,0,0,10" Padding="14,12">
+                                            <Grid ColumnDefinitions="*,Auto">
+                                                <StackPanel Grid.Column="0">
+                                                    <WrapPanel ItemSpacing="12">
+                                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="16" />
+                                                        <TextBlock Text="{Binding Url}" Classes="small muted" FontFamily="monospace" VerticalAlignment="Center" />
+                                                    </WrapPanel>
+                                                    <TextBlock Classes="small" Margin="0,4,0,0" Text="{Binding Blurb}" />
+                                                </StackPanel>
+                                                <Button Grid.Column="1" Content="Open" VerticalAlignment="Center" Margin="12,0,0,0" CommandParameter="{Binding Url}"
+                                                        Command="{Binding #Root.((vm:MainViewModel)DataContext).OpenLinkCommand}" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Border Classes="privacy">
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" /><TextBlock Grid.Column="1" Classes="privacy" Text="Every one of these can run on your own machine, privately, for free." /></Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ===== Step 8: A note from the maker ===== -->
+                        <StackPanel IsVisible="{Binding IsStep7}" Margin="0,40,0,0" MaxWidth="700" HorizontalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,30">
+                                <PathIcon Classes="lock" /><TextBlock Classes="privacy" Text="Everything you typed today stayed right here." />
+                            </StackPanel>
+                            <TextBlock FontSize="26" LineHeight="40" TextAlignment="Center" Opacity="{Binding NoteLine1Opacity}"
+                                       Text="The first time I realized that the true power of AI lay not on a cloud server, but on my desktop, inside my own computer, it changed my life.">
+                                <TextBlock.Transitions><Transitions><DoubleTransition Property="Opacity" Duration="0:0:1.6" /></Transitions></TextBlock.Transitions>
+                            </TextBlock>
+                            <TextBlock FontSize="26" LineHeight="40" TextAlignment="Center" Margin="0,24,0,0" FontWeight="SemiBold" Foreground="{StaticResource AccentBrush}" Opacity="{Binding NoteLine2Opacity}"
+                                       Text="I hope it changes yours too.">
+                                <TextBlock.Transitions><Transitions><DoubleTransition Property="Opacity" Duration="0:0:1.6" /></Transitions></TextBlock.Transitions>
+                            </TextBlock>
+                            <TextBlock FontSize="16" TextAlignment="Center" Margin="0,24,0,0" Classes="muted" Opacity="{Binding NoteSignatureOpacity}"
+                                       Text="{Binding MakerSignature, StringFormat='— {0}'}">
+                                <TextBlock.Transitions><Transitions><DoubleTransition Property="Opacity" Duration="0:0:1.2" /></Transitions></TextBlock.Transitions>
+                            </TextBlock>
+                            <StackPanel IsVisible="{Binding NoteButtonsVisible}" Margin="0,40,0,0" HorizontalAlignment="Center" Spacing="12">
+                                <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                                    <Button Classes="primary" Content="Copy the link to share this app" Command="{Binding CopyShareLinkCommand}" />
+                                    <Button Content="Keep chatting" Command="{Binding StartJustChatCommand}" />
+                                    <Button Content="Forget everything" Command="{Binding ForgetEverythingCommand}" />
+                                </StackPanel>
+                                <TextBlock HorizontalAlignment="Center" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource AccentBrush}" Text="{Binding ShareUrl}" />
+                                <TextBlock HorizontalAlignment="Center" FontSize="22" FontWeight="Black" LetterSpacing="1" Margin="0,18,0,0" Text="{Binding MovementLine}" />
+                                <Border Classes="card" Margin="0,30,0,0" Padding="20,16" MaxWidth="640">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" FontSize="17" Text="Who's behind this?" />
+                                        <TextBlock Margin="0,6,0,0" Text="Just me: a software engineer. There's no company behind this, no investors, no ads, and nothing to sell. Unplugged is free, and I have no stake in it at all." />
+                                        <TextBlock Margin="0,8,0,0" Text="I simply believe that everyone, everywhere, should have options when it comes to AI." />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer></Panel>
+            </Grid>
+
+            <!-- loading / error -->
+            <Border Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding IsLoading}" Background="{StaticResource BgBrush}">
+                <Border Classes="card" Width="560" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="28">
+                    <StackPanel Spacing="12">
+                        <TextBlock Classes="h1" FontSize="26" Text="Waking up the AI on your computer…" Margin="0" />
+                        <TextBlock Text="{Binding LoadStatus}" />
+                        <ProgressBar Value="{Binding LoadProgress}" Maximum="100" IsVisible="{Binding FatalError, Converter={x:Static ObjectConverters.IsNull}}" />
+                        <TextBlock Classes="small muted" Text="No internet is used. The AI is being read from your own drive." />
+                        <TextBlock Foreground="{StaticResource OfflineBrush}" Text="{Binding FatalError}" IsVisible="{Binding FatalError, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                    </StackPanel>
+                </Border>
+            </Border>
+
+            <!-- RIGHT: under the hood -->
+            <Border Grid.Column="1" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource LineBrush}" BorderThickness="1,0,0,0" IsVisible="{Binding !IsLoading}">
+                <Panel><ScrollViewer x:Name="PanelScroll" Padding="20,18">
+                    <StackPanel>
+                        <TextBlock Text="UNDER THE HOOD" FontWeight="Black" LetterSpacing="2" FontSize="13" Foreground="{StaticResource AccentBrush}" />
+                        <TextBlock Classes="small muted" Margin="0,4,0,0" Text="Everything below is happening inside this computer, right now." />
+
+                        <!-- The two big messages: shown first and large, on purpose -->
+                        <Border Classes="feature" Margin="0,16,0,0">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" Width="20" Height="20" /><TextBlock Grid.Column="1" Classes="featureTitle" Text="Where does your conversation go?" /></Grid>
+                                <TextBlock Classes="featureAnswer" Text="Nowhere." />
+                                <TextBlock Classes="featureBody" Text="It lives only in this computer's temporary memory. Close the app and it's gone. It's never sent anywhere, never saved, and the AI never keeps it. No company can see it, store it, or learn from it." />
+                                <TextBlock Classes="small muted" Margin="0,8,0,0" Text="{Binding MemoryUseText}" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="feature" Margin="0,12,0,0">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="Auto,*"><PathIcon Classes="lock" Data="{StaticResource ChipIcon}" Width="20" Height="20" /><TextBlock Grid.Column="1" Classes="featureTitle" Text="How does it work?" /></Grid>
+                                <TextBlock Classes="featureAnswer" Text="Just math, on your machine." />
+                                <TextBlock Classes="featureBody" Text="The AI is one big file of numbers, learned from text. When you type, your own computer runs your words through those numbers to guess the next word, again and again, until the answer is done." />
+                                <TextBlock Classes="featureBody" Margin="0,8,0,0" Text="No internet. No looking things up. No person on the other end. It's not magic: it's your hardware doing the work. Watch it below." />
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Classes="label" Text="WHERE THE AI LIVES" />
+                        <Border Classes="card" Padding="12">
+                            <StackPanel Spacing="2">
+                                <TextBlock Classes="small" FontWeight="SemiBold" Text="Your drive  →  Your memory  →  Your processor  →  Your screen" />
+                                <TextBlock Classes="small muted" Margin="0,6,0,0" Text="{Binding LoadSummary}" />
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock x:Name="CpuMeterLabel" Classes="label" Text="YOUR PROCESSOR (THIS APP)" />
+                        <Border Classes="card" Padding="12">
+                            <StackPanel>
+                                <TextBlock FontSize="26" FontWeight="Bold" Text="{Binding CpuPercent, StringFormat='{}{0:0}%'}" />
+                                <Canvas Width="280" Height="54" Margin="0,6,0,0" HorizontalAlignment="Left" Background="{StaticResource Panel2Brush}">
+                                    <Polyline Points="{Binding CpuGraph}" Stroke="{StaticResource AccentBrush}" StrokeThickness="2" />
+                                </Canvas>
+                            </StackPanel>
+                        </Border>
+
+                        <StackPanel IsVisible="{Binding UsingGpu}">
+                            <TextBlock Classes="label" Text="YOUR GRAPHICS CARD" />
+                            <Border Classes="card" Padding="12">
+                                <StackPanel>
+                                    <StackPanel IsVisible="{Binding HasGpuMeter}">
+                                        <TextBlock FontSize="26" FontWeight="Bold" Text="{Binding GpuPercent, StringFormat='{}{0:0}%'}" />
+                                        <Canvas Width="280" Height="54" Margin="0,6,0,0" HorizontalAlignment="Left" Background="{StaticResource Panel2Brush}">
+                                            <Polyline Points="{Binding GpuGraph}" Stroke="{StaticResource GoodBrush}" StrokeThickness="2" />
+                                        </Canvas>
+                                    </StackPanel>
+                                    <TextBlock Classes="small muted" Margin="0,6,0,0" Text="{Binding GpuSource}" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <TextBlock Classes="label" Text="NOW WRITING" />
+                        <Border Classes="card" Padding="12">
+                            <StackPanel>
+                                <Border Background="{StaticResource Panel2Brush}" CornerRadius="6" Padding="10,6" MinHeight="40">
+                                    <TextBlock FontFamily="monospace" FontSize="20" Foreground="{StaticResource AccentBrush}" Text="{Binding LastPiece}" />
+                                </Border>
+                                <TextBlock Classes="small muted" Margin="0,6,0,0" Text="Your computer writes one small piece of text at a time, each one calculated right here." />
+                                <TextBlock Classes="small" Margin="0,8,0,0" FontWeight="SemiBold" Text="{Binding SpeedText}" />
+                                <TextBlock Classes="small" Margin="0,4,0,0" Text="{Binding CalculationsText}" />
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Classes="label" Text="THE AI'S FILE: FINGERPRINT" />
+                        <Border Classes="card" Padding="12">
+                            <StackPanel Spacing="4">
+                                <TextBlock Classes="small" Text="{Binding FingerprintStart, StringFormat='At startup: {0}'}" FontFamily="monospace" />
+                                <ProgressBar Value="{Binding FingerprintProgress}" Maximum="100" IsVisible="{Binding IsFingerprinting}" />
+                                <TextBlock Classes="small" Foreground="{StaticResource GoodBrush}" Text="{Binding FingerprintPublished}" />
+                                <TextBlock Classes="small muted" Text="A fingerprint (SHA-256) changes if even one byte of the file changes. The file is opened read-only, so chatting can't change it." />
+                                <Button Margin="0,6,0,0" Content="Check it again now" Command="{Binding CheckFingerprintCommand}" HorizontalAlignment="Left" />
+                                <TextBlock Classes="small" Foreground="{StaticResource GoodBrush}" Text="{Binding FingerprintCheckResult}" IsVisible="{Binding FingerprintCheckResult, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Classes="label" Text="SEE IT WITH YOUR OWN TOOLS" />
+                        <TextBlock Classes="small" Text="{Binding SystemMonitorHowTo}" />
+
+                        <Expander Header="About this app &amp; licenses" Margin="0,16,0,0" HorizontalAlignment="Stretch">
+                            <StackPanel Spacing="8">
+                                <TextBlock Classes="small" Text="Unplugged is a free demonstration by Keep AI Local (keepailocal.org). It contains no networking code, no tracking and no accounts." />
+                                <TextBlock Classes="small" FontWeight="SemiBold" Text="Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms" />
+                                <TextBlock Classes="small" Text="The AI model is Google's Gemma 3 1B, unmodified. By using it you agree to the Gemma Terms of Use, including the Gemma Prohibited Use Policy (ai.google.dev/gemma/prohibited_use_policy). Full copies are in the app's &quot;models&quot; folder: NOTICE.txt, GEMMA_TERMS_OF_USE.txt and GEMMA_PROHIBITED_USE_POLICY.txt." />
+                                <TextBlock Classes="small muted" Text="AI engine: llama.cpp (MIT) via LLamaSharp (MIT). Interface: Avalonia (MIT). Icons: Material Design (Apache-2.0)." />
+                                <Button Content="Show the license files" Command="{Binding ShowModelFileCommand}" HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander Header="Technical details (engine log)" Margin="0,8,0,0" HorizontalAlignment="Stretch">
+                            <SelectableTextBlock Text="{Binding EngineDetails}" FontFamily="monospace" FontSize="10" TextWrapping="Wrap" />
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer></Panel>
+            </Border>
+        </Grid>
+
+        <!-- ================= FOOTER ================= -->
+        <Border Grid.Row="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0" Padding="24,12">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="10" IsVisible="{Binding !IsLoading}">
+                    <StackPanel Orientation="Horizontal" Spacing="10" IsVisible="{Binding ShowTourNav}">
+                        <Button Classes="link" Content="Can't disconnect right now? Continue anyway" Command="{Binding SkipOfflineCommand}" IsVisible="{Binding ShowSkipOffline}" VerticalAlignment="Center" />
+                        <Button Content="Back" Command="{Binding BackCommand}" IsEnabled="{Binding CanGoBack}" />
+                        <TextBlock Text="{Binding StepLabel}" Classes="muted" VerticalAlignment="Center" Margin="6,0" />
+                        <Button Classes="primary" Content="{Binding NextLabel}" Command="{Binding NextCommand}" IsEnabled="{Binding NextEnabled}" />
+                    </StackPanel>
+                    <Button Content="Restart the tour" Command="{Binding RestartTourCommand}" IsVisible="{Binding JustChatMode}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <PathIcon Classes="lock" />
+                    <TextBlock Classes="privacy" Text="Everything you type stays on this computer. Always." />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

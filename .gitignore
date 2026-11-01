@@ -1,0 +1,15 @@
+bin/
+obj/
+*.user
+.vs/
+.idea/
+# The model file is 3.3 GB: fetched by build/get-model.sh, never committed.
+models/*.gguf
+
+# Raw video frames: large, regenerable with campaign/record_hero.sh
+campaign/raw/
+
+# Private: stays on this computer only
+PLAN.md
+docs/PUBLISHING.md
+deploy/website/deploy.local

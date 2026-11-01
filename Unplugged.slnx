@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Unplugged.App/Unplugged.App.csproj" />
+    <Project Path="src/Unplugged.Core/Unplugged.Core.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Unplugged.Probe/Unplugged.Probe.csproj" />
+  </Folder>
+</Solution>

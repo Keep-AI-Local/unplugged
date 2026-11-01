@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keep AI Local: AI that lives on your computer</title>
+  <meta name="description" content="Unplugged is a free app that proves AI can run entirely on your own computer: no internet, no account, no subscription. Nothing you type ever leaves your machine.">
+  <meta name="theme-color" content="#0E1014">
+  <meta property="og:title" content="Keep AI Local">
+  <meta property="og:description" content="I turned off my internet. The AI kept working. Free app, no account, nothing leaves your computer.">
+  <meta property="og:image" content="https://keepailocal.org/assets/unplugged-proof-cover.png">
+  <meta property="og:url" content="https://keepailocal.org/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="#">KEEP AI LOCAL</a>
+  <nav>
+    <a href="#download">Download</a>
+    <a href="#why">Why it matters</a>
+    <a href="#community">Community</a>
+    <a href="#verify">Verify it</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Free · No account · No subscription</p>
+      <h1>AI that lives on <span class="accent">your</span> computer.</h1>
+      <p class="lead">Turn off your internet. It keeps working. Everything you type stays on your machine. Always.</p>
+      <div class="cta-row">
+        <a class="btn primary big" href="#download" id="hero-download">Get Unplugged, free</a>
+        <a class="btn ghost" href="#proof">Watch the 1-minute proof</a>
+      </div>
+      <p class="lock">Nothing you type ever leaves your computer.</p>
+    </div>
+    <figure class="hero-video" id="proof">
+      <video controls playsinline preload="none" poster="assets/unplugged-proof-cover.png" width="1080" height="1920"
+             aria-label="Video: a laptop's internet is turned off and the AI app keeps answering">
+        <source src="assets/unplugged-proof.mp4" type="video/mp4">
+      </video>
+      <figcaption>Real footage. The laptop is offline: the browser fails, and the AI still answers.</figcaption>
+    </figure>
+  </section>
+
+  <!-- WHAT IT IS -->
+  <section class="band">
+    <div class="three">
+      <div class="card">
+        <h3>It's one file.</h3>
+        <p>The AI inside Unplugged is a single 720 MB file: Google's free Gemma model. No server, no cloud, no company on the other end.</p>
+      </div>
+      <div class="card">
+        <h3>It's not magic.</h3>
+        <p>Every word is calculated by your own processor or graphics card. The app shows you the graph spike while it writes.</p>
+      </div>
+      <div class="card">
+        <h3>It can't read you back.</h3>
+        <p>The AI file is read-only. It doesn't record what you type, doesn't learn from you, and doesn't know who you are. The app proves it with a fingerprint check.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section id="download" class="download">
+    <h2>Try it yourself</h2>
+    <p class="lead center">Download it, open it, and follow the 8-step tour. At step 3 you turn off your own internet, and watch it keep working.</p>
+
+    <div id="dl-mobile" class="notice" hidden>
+      <h3>Unplugged runs on a computer, not a phone.</h3>
+      <p>Open this page on your Windows PC, Mac, or Linux computer:</p>
+      <p class="url">keepailocal.org</p>
+      <div class="cta-row center">
+        <button class="btn primary" id="share-btn" type="button">Send this link to myself</button>
+        <button class="btn ghost" id="copy-btn" type="button">Copy link</button>
+      </div>
+      <p class="small muted" id="copy-done" hidden>Copied!</p>
+    </div>
+
+    <div id="dl-soon" class="notice" hidden>
+      <h3>Downloads open very soon.</h3>
+      <p>We're putting the finishing touches on the Windows, Mac and Linux versions. Follow <strong>#KeepAILocal</strong> to hear the moment they're ready.</p>
+    </div>
+
+    <div id="dl-live" class="dl-main">
+      <a class="btn primary huge" id="dl-primary" href="#">Download for your computer</a>
+      <p class="small muted" id="dl-primary-note">About 0.9 GB · free · no sign-up</p>
+      <div class="dl-others">
+        <a class="dl-os" data-os="windows" href="#"><strong>Windows</strong><span>Windows 10 or 11 · 64-bit</span></a>
+        <a class="dl-os" data-os="mac" href="#"><strong>Mac</strong><span>Apple Silicon (M1 or newer)</span></a>
+        <a class="dl-os" data-os="linux" href="#"><strong>Linux</strong><span>AppImage · 64-bit</span></a>
+      </div>
+      <p class="small muted center">Downloads come straight from <a id="gh-releases" href="#">GitHub</a>, where you can also read every line of the source code. <a href="#verify">Check the download's fingerprint</a>.</p>
+    </div>
+
+    <ol class="steps">
+      <li><strong>Open Unplugged</strong> and say hi to the AI.</li>
+      <li><strong>Turn off your internet</strong>: the app shows you how, step by step.</li>
+      <li><strong>Open a website</strong> to prove it's off. It won't load.</li>
+      <li><strong>Talk to the AI again.</strong> Still working. Nothing leaves your computer.</li>
+    </ol>
+    <p class="small muted center">Works on most computers from the last several years. A graphics card makes it faster, but it isn't required.</p>
+  </section>
+
+  <!-- WHY -->
+  <section id="why" class="why">
+    <h2>Why this matters</h2>
+    <p class="lead">Let's be honest: the AI in this app is small. It isn't as smart as the big cloud AIs today, and that's okay. That's not the point.</p>
+
+    <div class="timeline">
+      <div class="tl"><span class="tl-label">A few years ago</span>AI like this needed a data center.</div>
+      <div class="tl-arrow" aria-hidden="true">→</div>
+      <div class="tl"><span class="tl-label">Today</span>It runs on your computer, with the internet off.</div>
+      <div class="tl-arrow" aria-hidden="true">→</div>
+      <div class="tl hi"><span class="tl-label">In a few years</span>The same and better, on every ordinary desktop.</div>
+    </div>
+
+    <div class="feature">
+      <h3>Corporations are not the enemy.</h3>
+      <p>Many of them build amazing things. One of them, Google, even gave away the AI inside this app for free.</p>
+      <p>But they'll want you to believe that the only way to have the AI of the future is to pay them for it, every month, forever.</p>
+      <p class="punch">That is simply not true.</p>
+      <p><strong>And local AI will keep getting better, year after year, as long as it's allowed to stay open and free.</strong></p>
+    </div>
+
+    <div class="feature warn">
+      <h3>Some people will tell you that local AI is dangerous.</h3>
+      <p>Like anything else, it can be used for good or for bad.</p>
+      <p>But they'll try to tell you it's too dangerous for you to have freedom and complete privacy. Privacy that hasn't existed since the dawn of the internet age.</p>
+      <p class="punch">Don't let them get away with it.</p>
+    </div>
+
+    <div class="feature neutral" id="data-centers">
+      <h3>What about data centers?</h3>
+      <p>People have real concerns about data centers: the electricity and water they use, and what they mean for the towns around them. Those concerns deserve to be taken seriously.</p>
+      <p>But local AI doesn't replace data centers. The AI in Unplugged was trained in one. Today there's simply no other way to train large, capable models, and that work keeps a lot of people employed, including software engineers like me.</p>
+      <p><strong>So this isn't local AI versus data centers. Data centers train the models. Local AI lets you run them on your own terms.</strong></p>
+      <p class="muted">My own guess: as models keep getting more efficient, we'll need fewer data centers in the future, not more. We're just not there yet.</p>
+    </div>
+
+    <p class="lock wide">If AI only exists on company servers, every thought you share with it is stored on someone else's computer. Local AI is how privacy survives the AI age.</p>
+  </section>
+
+  <!-- WHAT YOU CAN DO -->
+  <section class="todo">
+    <h2>What your computer can already do, offline</h2>
+    <ul class="ideas">
+      <li><span>Write, rewrite and proofread emails, letters and résumés</span><em>Any computer</em></li>
+      <li><span>Summarize your own documents and ask questions about them</span><em>Any computer · faster with a GPU</em></li>
+      <li><span>Translate between languages</span><em>Any computer</em></li>
+      <li><span>Ask private questions about health, money, legal matters or relationships</span><em>Any computer</em></li>
+      <li><span>Turn recordings and meetings into text</span><em>Any computer · faster with a GPU</em></li>
+      <li><span>Homework help, without a company collecting your kids' data</span><em>Any computer</em></li>
+      <li><span>Coding help</span><em>Graphics card recommended</em></li>
+      <li><span>Read text in photos and describe images</span><em>Graphics card recommended</em></li>
+      <li><span>Make images and art</span><em>Graphics card, ~8 GB+ video memory</em></li>
+      <li><span>Make short video clips</span><em>Powerful graphics card, ~12–24 GB+</em></li>
+    </ul>
+    <p class="muted">Image and video generation are the hardest jobs there are for a computer. They won't work on every machine today, and most need a good graphics card. A few years ago they needed a data center. They're on the same path as the text AI in Unplugged, and in the future they'll run on even the most modest computer, privately, with no internet, if we keep it legal and open.</p>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section id="community" class="community">
+    <h2>Honestly? You don't need our app.</h2>
+    <p class="lead">There's a whole open community already doing all of this, for free, and it's been growing for years. Unplugged is just the proof. Here's where the real thing lives:</p>
+    <div class="links">
+      <a class="link" href="https://huggingface.co" rel="noopener"><strong>Hugging Face</strong><span>The world's library of open AI models, shared freely by the community.</span><code>huggingface.co</code></a>
+      <a class="link" href="https://ollama.com" rel="noopener"><strong>Ollama</strong><span>The easiest way to download and run AI models on your own computer.</span><code>ollama.com</code></a>
+      <a class="link" href="https://lmstudio.ai" rel="noopener"><strong>LM Studio</strong><span>A friendly desktop app: pick a model, download it, chat. Offline after download.</span><code>lmstudio.ai</code></a>
+      <a class="link" href="https://jan.ai" rel="noopener"><strong>Jan</strong><span>An open-source, offline-first chat app for your own computer.</span><code>jan.ai</code></a>
+      <a class="link" href="https://www.nomic.ai/gpt4all" rel="noopener"><strong>GPT4All</strong><span>Beginner-friendly local chat that can also read your own documents privately.</span><code>nomic.ai/gpt4all</code></a>
+      <a class="link" href="https://github.com/ggml-org/llama.cpp" rel="noopener"><strong>llama.cpp</strong><span>The open engine that powers most local AI, including Unplugged.</span><code>github.com/ggml-org/llama.cpp</code></a>
+      <a class="link" href="https://www.reddit.com/r/LocalLLaMA" rel="noopener"><strong>r/LocalLLaMA</strong><span>The biggest community of people running AI at home. Friendly to beginners.</span><code>reddit.com/r/LocalLLaMA</code></a>
+      <a class="link" href="https://www.comfy.org" rel="noopener"><strong>ComfyUI</strong><span>Make images and video on your own graphics card.</span><code>comfy.org</code></a>
+    </div>
+  </section>
+
+  <!-- VERIFY -->
+  <section id="verify" class="verify">
+    <h2>Don't trust us. Verify it.</h2>
+    <div class="three">
+      <div class="card">
+        <h3>Read the code</h3>
+        <p>Unplugged is open source. It contains no networking code, no tracking, no analytics and no update checks. <a id="gh-source" href="#">See it on GitHub</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Block it, it still works</h3>
+        <p>Turn off your Wi-Fi, unplug the cable, or block Unplugged in your firewall. It works exactly the same, because it never needed the internet.</p>
+      </div>
+      <div class="card">
+        <h3>Check the fingerprints</h3>
+        <p>The app shows the AI file's SHA-256 fingerprint and checks it against the one published on Hugging Face. Each download's fingerprint is listed on its <a id="gh-latest" href="#">GitHub release page</a>.</p>
+      </div>
+    </div>
+    <p class="small muted">AI model fingerprint (gemma-3-1b-it-qat-Q4_0.gguf): <code class="hash">ef60e4e91a738c99ae9976b050657dfe68a4007a0ccca121b55ec0c413dccd58</code></p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2>Questions</h2>
+    <details><summary>Is it as smart as ChatGPT?</summary><p>No, not today, and that's not the point. This small AI proves AI can live on your own computer with no internet at all. Local models are improving fast: in a few years the same and better will run on ordinary computers, as long as open models stay available.</p></details>
+    <details><summary>Do I need the internet to use it?</summary><p>Only once, to download it, like buying a book. After that, never again.</p></details>
+    <details><summary>Does it work without a graphics card?</summary><p>Yes. It runs on your computer's regular processor. A graphics card makes it faster, but it isn't required.</p></details>
+    <details><summary>What happens to what I type?</summary><p>Nothing. It stays in your computer's temporary memory and disappears when you close the app. It's never sent anywhere and never saved. The AI file itself is read-only and can't record anything.</p></details>
+    <details><summary>Is it really free? What's the catch?</summary><p>There's no catch. No account, no ads, no data collection, no upgrade. Keep AI Local is one software engineer with nothing to sell, who wants people to know this is possible.</p></details>
+    <details><summary>Which AI is inside?</summary><p>Google's Gemma 3 1B, the smallest Gemma made for conversation. Gemma is provided under and subject to the Gemma Terms of Use found at <a href="https://ai.google.dev/gemma/terms" rel="noopener">ai.google.dev/gemma/terms</a>, including the <a href="https://ai.google.dev/gemma/prohibited_use_policy" rel="noopener">Gemma Prohibited Use Policy</a>.</p></details>
+    <details><summary>Does this website track me?</summary><p>No. No cookies, no analytics, no trackers, no fonts or scripts loaded from anywhere else. It would be a strange way to talk about privacy otherwise.</p></details>
+  </section>
+
+  <!-- WHO -->
+  <section id="who" class="who">
+    <h2>Who's behind this?</h2>
+    <p class="lead">Just me: a software engineer. There's no company behind this, no investors, no ads, and nothing to sell. Unplugged is free, and I have no stake in it at all.</p>
+    <p class="lead">I simply believe that everyone, everywhere, should have options when it comes to AI.</p>
+  </section>
+
+  <!-- CLOSING NOTE -->
+  <section class="note">
+    <blockquote>
+      <p>The first time I realized that the true power of AI lay not on a cloud server, but on my desktop, inside my own computer, it changed my life.</p>
+      <p class="accent">I hope it changes yours too.</p>
+      <footer>Keep AI Local</footer>
+    </blockquote>
+    <a class="btn primary big" href="#download">Get Unplugged, free</a>
+    <p class="tag">Keep AI local. <span class="accent">#KeepAILocal</span></p>
+  </section>
+</main>
+
+<footer class="bottom">
+  <p><strong>Keep AI Local</strong> · keepailocal.org · <a id="gh-footer" href="#">Source code on GitHub</a></p>
+  <p class="small muted">This site sets no cookies and loads nothing from other servers. Unplugged is free and open source. Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms. Gemma is a trademark of Google LLC; Keep AI Local is not affiliated with Google. Inter typeface: SIL Open Font License.</p>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
