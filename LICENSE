@@ -19,10 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-This license covers the Unplugged source code only. The bundled AI model (Google Gemma 3 1B) is NOT covered
-by this license: Gemma is provided under and subject to the Gemma Terms of Use found at
-ai.google.dev/gemma/terms (see models/NOTICE.txt). Other components keep their own licenses: llama.cpp (MIT),
-LLamaSharp (MIT), Avalonia (MIT), CommunityToolkit.Mvvm (MIT), Inter typeface (SIL OFL 1.1),
-Material Design icons (Apache-2.0).

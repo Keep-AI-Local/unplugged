@@ -29,5 +29,5 @@ Gemma is provided under and subject to the Gemma Terms of Use found at ai.google
 `models/GEMMA_TERMS_OF_USE.txt`, `models/GEMMA_PROHIBITED_USE_POLICY.txt`, which must ship with every build).
 
 ## License
-Unplugged's source code is MIT-licensed (see `LICENSE`). The AI model is not: Gemma is provided under and subject to the
+Unplugged's source code is MIT-licensed (see `LICENSE`; third-party parts in `THIRD_PARTY_NOTICES.md`). The AI model is not: Gemma is provided under and subject to the
 Gemma Terms of Use found at ai.google.dev/gemma/terms.
