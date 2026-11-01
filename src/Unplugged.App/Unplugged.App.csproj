@@ -4,6 +4,14 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>Unplugged</AssemblyName>
+    <RootNamespace>Unplugged.App</RootNamespace>
+    <ApplicationIcon>Assets/unplugged.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <Product>Unplugged</Product>
+    <Company>Keep AI Local</Company>
+    <Copyright>Copyright (c) 2026 Keep AI Local (MIT)</Copyright>
+    <Description>AI that lives entirely on your computer.</Description>
   </PropertyGroup>
 
   <ItemGroup>

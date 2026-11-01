@@ -24,7 +24,7 @@ trap restore EXIT INT TERM
 setsid nohup sh -c 'sleep 180; nmcli networking on' >/dev/null 2>&1 &
 
 log "starting app (demo mode, CPU only)"
-( cd "$APPDIR" && UNPLUGGED_DEMO=1 UNPLUGGED_FORCE_CPU=1 UNPLUGGED_RECORD_DIR="$OUT" ./Unplugged.App >"$OUT/app.log" 2>&1 ) &
+( cd "$APPDIR" && UNPLUGGED_DEMO=1 UNPLUGGED_FORCE_CPU=1 UNPLUGGED_RECORD_DIR="$OUT" ./Unplugged >"$OUT/app.log" 2>&1 ) &
 APP=$!
 
 for _ in $(seq 1 120); do grep -q " ready" "$OUT/events.txt" 2>/dev/null && break; sleep 0.5; done
@@ -49,7 +49,7 @@ log "browser screenshot: $( [ -s "$OUT/browser-offline.png" ] && echo saved || e
 
 for _ in $(seq 1 180); do grep -q " stopped" "$OUT/events.txt" 2>/dev/null && break; sleep 0.5; done
 log "demo finished: $(tr '\n' ' ' < "$OUT/events.txt")"
-pkill -f "^\./Unplugged\.App$" 2>/dev/null; kill $APP 2>/dev/null
+pkill -f "^\./Unplugged$" 2>/dev/null; kill $APP 2>/dev/null
 
 restore
 for _ in $(seq 1 30); do [ "$(nmcli networking connectivity)" = "full" ] && break; sleep 1; done

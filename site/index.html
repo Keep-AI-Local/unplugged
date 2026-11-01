@@ -90,13 +90,23 @@
 
     <div id="dl-live" class="dl-main">
       <a class="btn primary huge" id="dl-primary" href="#">Download for your computer</a>
-      <p class="small muted" id="dl-primary-note">About 0.9 GB · free · no sign-up</p>
+      <p class="small muted" id="dl-primary-note">About 750 MB · free · no sign-up</p>
       <div class="dl-others">
         <a class="dl-os" data-os="windows" href="#"><strong>Windows</strong><span>Windows 10 or 11 · 64-bit</span></a>
         <a class="dl-os" data-os="mac" href="#"><strong>Mac</strong><span>Apple Silicon (M1 or newer)</span></a>
-        <a class="dl-os" data-os="linux" href="#"><strong>Linux</strong><span>AppImage · 64-bit</span></a>
+        <a class="dl-os" data-os="linux" href="#"><strong>Linux</strong><span>64-bit · .tar.gz</span></a>
       </div>
       <p class="small muted center">Downloads come straight from <a id="gh-releases" href="#">GitHub</a>, where you can also read every line of the source code. <a href="#verify">Check the download's fingerprint</a>.</p>
+    </div>
+
+    <div class="heads-up" id="warning">
+      <h3>Heads up: your computer will warn you. We know.</h3>
+      <p>When you open Unplugged the first time, Windows or macOS will show a scary-looking warning. That's because the app isn't "code-signed", which costs hundreds of dollars every year. Unplugged is free and has nothing to sell, so we skipped it. The warning means <em>"we don't know who made this"</em>, not <em>"this is dangerous"</em>. The code is public on GitHub for anyone to check.</p>
+      <div class="three">
+        <div class="card"><h4>Windows</h4><p>"Windows protected your PC" →<br>click <strong>More info</strong>, then <strong>Run anyway</strong>.</p><p class="small muted">Unzip first: right-click the zip → Extract All.</p></div>
+        <div class="card"><h4>Mac</h4><p>"Apple could not verify…" → click <strong>Done</strong>, then <strong>System Settings → Privacy &amp; Security</strong> → <strong>Open Anyway</strong>.</p><p class="small muted">Only needed the first time.</p></div>
+        <div class="card"><h4>Linux</h4><p>No warning. Extract it, open the folder, and double-click <strong>Unplugged</strong> (or run <code>./Unplugged</code>).</p></div>
+      </div>
     </div>
 
     <ol class="steps">
@@ -210,6 +220,7 @@
     <details><summary>What happens to what I type?</summary><p>Nothing. It stays in your computer's temporary memory and disappears when you close the app. It's never sent anywhere and never saved. The AI file itself is read-only and can't record anything.</p></details>
     <details><summary>Is it really free? What's the catch?</summary><p>There's no catch. No account, no ads, no data collection, no upgrade. Keep AI Local is one software engineer with nothing to sell, who wants people to know this is possible.</p></details>
     <details><summary>Which AI is inside?</summary><p>Google's Gemma 3 1B, the smallest Gemma made for conversation. Gemma is provided under and subject to the Gemma Terms of Use found at <a href="https://ai.google.dev/gemma/terms" rel="noopener">ai.google.dev/gemma/terms</a>, including the <a href="https://ai.google.dev/gemma/prohibited_use_policy" rel="noopener">Gemma Prohibited Use Policy</a>.</p></details>
+    <details><summary>Why does my computer warn me about Unplugged?</summary><p>Because we didn't pay for code signing. Microsoft and Apple charge yearly fees to "vouch" for an app; without that, they show a warning for any download they don't recognize. Unplugged is a free project with nothing to sell, so we skipped it. You can read every line of the code on <a href="https://github.com/Keep-AI-Local/unplugged" rel="noopener">GitHub</a>, and check each download's fingerprint on its release page. See <a href="#warning">how to open it</a>.</p></details>
     <details><summary>Does this website track me?</summary><p>No. No cookies, no analytics, no trackers, no fonts or scripts loaded from anywhere else. It would be a strange way to talk about privacy otherwise.</p></details>
   </section>
 

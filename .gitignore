@@ -13,3 +13,5 @@ campaign/raw/
 PLAN.md
 docs/PUBLISHING.md
 deploy/website/deploy.local
+build/tools/
+dist/

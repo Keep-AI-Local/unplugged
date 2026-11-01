@@ -1,0 +1,19 @@
+UNPLUGGED: AI that lives entirely on your computer
+Free · No account · No internet needed · keepailocal.org
+
+HOW TO OPEN IT
+1. Extract the download (right-click "Unplugged-Linux-x64.tar.gz" -> "Extract Here").
+2. Open the "Unplugged" folder and double-click "Unplugged".
+   If nothing happens: right-click it -> "Run" / "Run as a Program", or open a terminal in the
+   folder and type:   ./Unplugged
+
+Uses your graphics card automatically if it supports Vulkan (most NVIDIA, AMD and Intel cards with
+current drivers); otherwise it runs on your processor.
+
+Nothing is installed, nothing is written to your computer, and nothing you type ever leaves it.
+To remove Unplugged, just delete the folder.
+
+Check it yourself: github.com/Keep-AI-Local/unplugged (fingerprints are on the release page).
+
+Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms
+(see models/NOTICE.txt). Unplugged's own code is MIT-licensed (LICENSE.txt).

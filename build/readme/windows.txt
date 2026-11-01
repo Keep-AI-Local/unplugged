@@ -1,0 +1,26 @@
+UNPLUGGED: AI that lives entirely on your computer
+Free · No account · No internet needed · keepailocal.org
+
+HOW TO OPEN IT
+1. If you haven't already: right-click the downloaded "Unplugged-Windows-x64.zip" and choose
+   "Extract All...", then "Extract". (It won't work from inside the zip.)
+2. Open the extracted "Unplugged" folder and double-click "Unplugged" (Unplugged.exe).
+
+WINDOWS WILL PROBABLY WARN YOU. HERE'S WHY, AND WHAT TO DO.
+You'll likely see a blue box: "Windows protected your PC".
+  -> Click "More info", then click "Run anyway".
+
+This happens because Unplugged isn't "code-signed". Signing costs hundreds of dollars a year, and
+Unplugged is a free project with nothing to sell. The warning means "Microsoft doesn't know who made
+this", not "this is dangerous". If you'd like to check it yourself:
+  - Every line of the code is public: github.com/Keep-AI-Local/unplugged
+  - Each download's fingerprint (SHA-256) is listed on the GitHub release page.
+
+WHAT'S INSIDE
+  Unplugged.exe ........ the app
+  models\ .............. the AI itself: one file (Google's Gemma 3 1B), plus its license files
+Nothing is installed, nothing is written to your computer, and nothing you type ever leaves it.
+To remove Unplugged, just delete the folder.
+
+Gemma is provided under and subject to the Gemma Terms of Use found at ai.google.dev/gemma/terms
+(see models\NOTICE.txt). Unplugged's own code is MIT-licensed (LICENSE.txt).

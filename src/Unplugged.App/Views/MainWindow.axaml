@@ -7,7 +7,7 @@
         x:Class="Unplugged.App.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         x:Name="Root"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/unplugged.ico"
         Width="1240" Height="820" MinWidth="980" MinHeight="640"
         WindowStartupLocation="CenterScreen"
         Title="Unplugged · AI that lives on your computer">
@@ -195,7 +195,7 @@
                             <TextBlock Classes="lead" Text="No account. No subscription. No server. The whole AI is one file, and it's sitting on your computer right now:" />
                             <Border Classes="card" Margin="0,16,0,0">
                                 <StackPanel Spacing="4">
-                                    <TextBlock FontFamily="monospace" FontSize="17" FontWeight="SemiBold" Text="{Binding ModelFileName}" />
+                                    <TextBlock FontFamily="Cascadia Mono, Consolas, Menlo, DejaVu Sans Mono, monospace" FontSize="17" FontWeight="SemiBold" Text="{Binding ModelFileName}" />
                                     <TextBlock Classes="muted" Text="{Binding ModelSizeText, StringFormat='{}{0}. That file is the whole thing.'}" />
                                     <TextBlock Margin="0,8,0,0" Text="{Binding ModelName, StringFormat='{}{0}: a free, open AI model made by Google that anyone can download.'}" />
                                     <TextBlock Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" Text="{Binding RunningOnText}" />
@@ -393,7 +393,7 @@
                                                 <StackPanel Grid.Column="0">
                                                     <WrapPanel ItemSpacing="12">
                                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="16" />
-                                                        <TextBlock Text="{Binding Url}" Classes="small muted" FontFamily="monospace" VerticalAlignment="Center" />
+                                                        <TextBlock Text="{Binding Url}" Classes="small muted" FontFamily="Cascadia Mono, Consolas, Menlo, DejaVu Sans Mono, monospace" VerticalAlignment="Center" />
                                                     </WrapPanel>
                                                     <TextBlock Classes="small" Margin="0,4,0,0" Text="{Binding Blurb}" />
                                                 </StackPanel>
@@ -523,7 +523,7 @@
                         <Border Classes="card" Padding="12">
                             <StackPanel>
                                 <Border Background="{StaticResource Panel2Brush}" CornerRadius="6" Padding="10,6" MinHeight="40">
-                                    <TextBlock FontFamily="monospace" FontSize="20" Foreground="{StaticResource AccentBrush}" Text="{Binding LastPiece}" />
+                                    <TextBlock FontFamily="Cascadia Mono, Consolas, Menlo, DejaVu Sans Mono, monospace" FontSize="20" Foreground="{StaticResource AccentBrush}" Text="{Binding LastPiece}" />
                                 </Border>
                                 <TextBlock Classes="small muted" Margin="0,6,0,0" Text="Your computer writes one small piece of text at a time, each one calculated right here." />
                                 <TextBlock Classes="small" Margin="0,8,0,0" FontWeight="SemiBold" Text="{Binding SpeedText}" />
@@ -534,7 +534,7 @@
                         <TextBlock Classes="label" Text="THE AI'S FILE: FINGERPRINT" />
                         <Border Classes="card" Padding="12">
                             <StackPanel Spacing="4">
-                                <TextBlock Classes="small" Text="{Binding FingerprintStart, StringFormat='At startup: {0}'}" FontFamily="monospace" />
+                                <TextBlock Classes="small" Text="{Binding FingerprintStart, StringFormat='At startup: {0}'}" FontFamily="Cascadia Mono, Consolas, Menlo, DejaVu Sans Mono, monospace" />
                                 <ProgressBar Value="{Binding FingerprintProgress}" Maximum="100" IsVisible="{Binding IsFingerprinting}" />
                                 <TextBlock Classes="small" Foreground="{StaticResource GoodBrush}" Text="{Binding FingerprintPublished}" />
                                 <TextBlock Classes="small muted" Text="A fingerprint (SHA-256) changes if even one byte of the file changes. The file is opened read-only, so chatting can't change it." />
@@ -557,7 +557,7 @@
                         </Expander>
 
                         <Expander Header="Technical details (engine log)" Margin="0,8,0,0" HorizontalAlignment="Stretch">
-                            <SelectableTextBlock Text="{Binding EngineDetails}" FontFamily="monospace" FontSize="10" TextWrapping="Wrap" />
+                            <SelectableTextBlock Text="{Binding EngineDetails}" FontFamily="Cascadia Mono, Consolas, Menlo, DejaVu Sans Mono, monospace" FontSize="10" TextWrapping="Wrap" />
                         </Expander>
                     </StackPanel>
                 </ScrollViewer></Panel>
