@@ -364,6 +364,21 @@
                                 </StackPanel>
                             </Border>
 
+                            <Border Margin="0,22,0,0" Padding="22,18" CornerRadius="14" BorderThickness="2" BorderBrush="#FBBF24" Background="#2A2410">
+                                <StackPanel>
+                                    <TextBlock FontSize="22" LineHeight="30" FontWeight="Bold" Foreground="#FBBF24" Text="Not all &quot;local AI&quot; is the same." />
+                                    <TextBlock Classes="lead" Margin="0,8,0,0" Text="Some companies will tell you their AI is &quot;local&quot; because it runs on your machine. But running on your machine doesn't automatically make it private, or yours." />
+                                    <TextBlock Margin="0,10,0,0" Text="Some of those same apps won't hesitate to collect data about how you use them, or to decide which questions you're allowed to ask. And it will all be done in the name of security and protection." />
+                                    <TextBlock FontSize="20" LineHeight="28" FontWeight="Black" Foreground="#FBBF24" Margin="0,12,0,0" Text="Security and protection are important. But they can also be used to manipulate you, for commercial interests." />
+                                    <TextBlock FontWeight="SemiBold" Margin="0,16,0,6" Text="How to tell if your AI is really local:" />
+                                    <TextBlock Text="✓  Turn off your internet. Does it still work, completely?" />
+                                    <TextBlock Text="✓  Read what it collects. Look for &quot;usage data&quot;, &quot;analytics&quot; or &quot;telemetry&quot;." />
+                                    <TextBlock Text="✓  Can you choose the AI model? If you can't, someone else is in control." />
+                                    <TextBlock Text="✓  Can anyone check the code? &quot;Trust us&quot; isn't proof." />
+                                    <TextBlock Classes="small muted" Margin="0,10,0,0" Text="Unplugged passes all four. You just tested the first one yourself." />
+                                </StackPanel>
+                            </Border>
+
                             <TextBlock Classes="h2" Text="And honestly? You don't need this app." />
                             <TextBlock Text="There's a whole open community already doing all of this, for free, and it's been growing for years. This app was just the proof. On the next screen: where the real thing lives." />
                             <Border Classes="privacy">
