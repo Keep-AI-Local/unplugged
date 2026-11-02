@@ -39,8 +39,8 @@
   const primary = document.getElementById("dl-primary");
   if (primary) {
     if (os) { primary.href = fileUrl(ASSETS[os].file); primary.textContent = ASSETS[os].label; }
-    if (os === "windows") primary.addEventListener("click", showWinSteps);
     else { primary.href = latest; primary.textContent = "See all downloads"; }
+    if (os === "windows") primary.addEventListener("click", showWinSteps);
   }
 
   if (isMobile) {
