@@ -146,7 +146,12 @@ public partial class MainViewModel : ViewModelBase, IDisposable
 
     // ---------- OS-specific wording ----------
     public bool IsWindows => OperatingSystem.IsWindows();
-    public OfflineGuide Guide { get; } = OfflineGuide.ForThisComputer();
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(GuideFor), nameof(ShowAirplaneButton), nameof(ShowNetworkSettingsButton), nameof(ShowCableBox))]
+    public partial OfflineGuide Guide { get; set; } = OfflineGuide.ForThisComputer();
+    public bool ShowAirplaneButton => IsWindows && !Guide.IsWired;
+    public bool ShowNetworkSettingsButton => IsWindows && Guide.IsWired;
+    public bool ShowCableBox => !Guide.IsWired;
     public string GuideTitle => "How to turn off your internet";
     public string GuideFor => $"Instructions for your computer: {Guide.SystemName}";
     public string ReconnectTitle => "First, turn your internet back on";
@@ -339,6 +344,8 @@ public partial class MainViewModel : ViewModelBase, IDisposable
 
     private void GoTo(int step)
     {
+        // Re-check how this computer is connected (Wi-Fi or cable) right before showing the "unplug it" steps.
+        if (step == 2 && IsOnline) Guide = OfflineGuide.ForThisComputer();
         Step = step;
         if (step == 7) _ = PlayNoteAsync();
     }
@@ -415,6 +422,7 @@ public partial class MainViewModel : ViewModelBase, IDisposable
     // ---------- commands: proofs ----------
     [RelayCommand] private Task OpenProofWebsite() => Platform?.OpenUriAsync("https://www.wikipedia.org") ?? Task.CompletedTask;
     [RelayCommand] private Task OpenAirplaneSettings() => Platform?.OpenUriAsync("ms-settings:network-airplanemode") ?? Task.CompletedTask;
+    [RelayCommand] private Task OpenNetworkSettings() => Platform?.OpenUriAsync("ms-settings:network-advancedsettings") ?? Task.CompletedTask;
     [RelayCommand] private Task ShowModelFile() => Platform?.OpenFolderAsync(Path.GetDirectoryName(_ai.ModelPath)!) ?? Task.CompletedTask;
     [RelayCommand] private Task OpenLink(string? url) => url == null || Platform == null ? Task.CompletedTask : Platform.OpenUriAsync(url);
     [RelayCommand] private Task CopyShareLink() => Platform?.CopyTextAsync(AppInfo.SiteUrl) ?? Task.CompletedTask;

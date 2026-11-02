@@ -17,3 +17,4 @@ these must ship with every build.
 | CommunityToolkit.Mvvm | MIT |
 | Inter typeface | SIL Open Font License 1.1 |
 | Material Design icons | Apache-2.0 |
+| Microsoft Visual C++ runtime (Windows build only: msvcp140, vcruntime140, vcruntime140_1, vcomp140) | Microsoft redistributable files, shipped app-local as permitted by the Visual Studio license |

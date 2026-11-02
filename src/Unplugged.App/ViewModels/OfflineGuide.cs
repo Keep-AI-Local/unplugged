@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unplugged.Core;
 
 namespace Unplugged.App.ViewModels;
 
@@ -29,10 +31,31 @@ public sealed record GuideStep(int Number, string Text, GuidePicture Picture = G
 public sealed class OfflineGuide
 {
     public string SystemName { get; init; } = "";
+    /// <summary>True when these steps are for a computer connected with a network cable.</summary>
+    public bool IsWired { get; init; }
     public IReadOnlyList<GuideStep> OffSteps { get; init; } = [];
     public IReadOnlyList<GuideStep> OnSteps { get; init; } = [];
 
-    public static OfflineGuide ForThisComputer()
+    public static OfflineGuide ForThisComputer() => ForThisComputer(NetworkStatusWatcher.ActiveKind());
+
+    public static OfflineGuide ForThisComputer(ConnectionKind kind)
+    {
+        // Plugged in with a cable and no Wi-Fi: there's no Wi-Fi / Airplane-mode switch to use.
+        if (kind == ConnectionKind.Wired) return Wired();
+        var g = WiFiGuide();
+        // Both Wi-Fi and a cable: both must go.
+        if (kind == (ConnectionKind.WiFi | ConnectionKind.Wired))
+        {
+            var steps = g.OffSteps.ToList();
+            var last = steps[^1];
+            steps.Insert(steps.Count - 1, new GuideStep(steps.Count, "This computer is ALSO plugged in with a network cable. Unplug that too: press the little clip on the plug and pull it out gently.", GuidePicture.Cable));
+            steps[^1] = last with { Number = steps.Count };
+            return new OfflineGuide { SystemName = g.SystemName + ", Wi-Fi and cable", OffSteps = steps, OnSteps = g.OnSteps.Append(new GuideStep(g.OnSteps.Count + 1, "Plug the network cable back in.", GuidePicture.Cable)).ToList() };
+        }
+        return g;
+    }
+
+    private static OfflineGuide WiFiGuide()
     {
         if (OperatingSystem.IsWindows())
             return Environment.OSVersion.Version.Build >= 22000 ? Windows11() : Windows10();
@@ -41,6 +64,65 @@ public sealed class OfflineGuide
         if (desktop.Contains("KDE")) return LinuxKde();
         if (desktop.Contains("GNOME") || desktop.Contains("UBUNTU")) return LinuxGnome();
         return LinuxOther();
+    }
+
+    private const string FindTheCable =
+        "Look at the back or side of your computer for a cable with a plug a bit wider than a phone charger and a little clip on it.";
+
+    private static OfflineGuide Wired()
+    {
+        if (OperatingSystem.IsWindows()) return new()
+        {
+            SystemName = "Windows, connected with a cable", IsWired = true,
+            OffSteps =
+            [
+                new(1, "This computer is connected with a network cable, so there's no Airplane-mode switch. The simplest way: unplug the cable.", GuidePicture.Cable, FindTheCable),
+                new(2, "Press the little clip down and gently pull the plug out."),
+                new(3, "Can't reach the cable? Click \"Open Windows' network settings\" below, then click \"Disable\" next to Ethernet. If Windows asks for permission, click \"Yes\"."),
+                new(4, "That's it! Now look at the top of this window. The badge should turn red and say OFFLINE."),
+            ],
+            OnSteps =
+            [
+                new(1, "Plug the network cable back in.", GuidePicture.Cable),
+                new(2, "If you used \"Disable\" instead: open the same settings page and click \"Enable\" next to Ethernet. Your internet comes back in a few seconds."),
+            ],
+        };
+        if (OperatingSystem.IsMacOS()) return new()
+        {
+            SystemName = "Mac, connected with a cable", IsWired = true,
+            OffSteps =
+            [
+                new(1, "This Mac is connected with a network cable. The simplest way: unplug the cable (on many Macs it goes into a small adapter).", GuidePicture.Cable, FindTheCable),
+                new(2, "Press the little clip down and gently pull the plug out.",
+                    Tip: "Can't reach it? Open System Settings -> Network, Control-click \"Ethernet\" and choose \"Make Service Inactive\"."),
+                new(3, "That's it! Now look at the top of this window. The badge should turn red and say OFFLINE."),
+            ],
+            OnSteps =
+            [
+                new(1, "Plug the network cable back in.", GuidePicture.Cable),
+                new(2, "If you used \"Make Service Inactive\": Control-click \"Ethernet\" in System Settings -> Network again and choose \"Make Service Active\"."),
+            ],
+        };
+        var desktop = (Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP") ?? "").ToUpperInvariant();
+        string how = desktop.Contains("KDE")
+            ? "Or, without unplugging: click the network symbol near the clock and click \"Disconnect\" next to your wired connection."
+            : desktop.Contains("GNOME") || desktop.Contains("UBUNTU")
+                ? "Or, without unplugging: click the symbols at the top-right of your screen and turn off the \"Wired\" button."
+                : "Or, without unplugging: click the network symbol in your panel and disconnect the wired connection.";
+        return new()
+        {
+            SystemName = "Linux, connected with a cable", IsWired = true,
+            OffSteps =
+            [
+                new(1, "This computer is connected with a network cable. The simplest way: unplug the cable.", GuidePicture.Cable, FindTheCable),
+                new(2, "Press the little clip down and gently pull the plug out.", Tip: how),
+                new(3, "That's it! Now look at the top of this window. The badge should turn red and say OFFLINE."),
+            ],
+            OnSteps =
+            [
+                new(1, "Plug the network cable back in (or reconnect the wired connection the same way you disconnected it).", GuidePicture.Cable),
+            ],
+        };
     }
 
     private const string KeyboardTip =

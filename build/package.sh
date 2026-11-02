@@ -8,7 +8,8 @@
 # the website explains the one-time OS warning.
 #
 # Needs: dotnet, makensis (apt: nsis), mksquashfs (squashfs-tools), mkfs.hfsplus (hfsprogs), and
-# build/tools/runtime-x86_64 (AppImage type2 runtime from github.com/AppImage/type2-runtime).
+# build/tools/runtime-x86_64 (AppImage type2 runtime from github.com/AppImage/type2-runtime), and
+# build/tools/vcruntime/*.dll (Microsoft VC++ runtime, fetched by build/get-vcruntime.sh; needs 7z).
 # The Mac disk image is assembled on a loop mount, so the build asks for your password once (sudo -A).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -45,6 +46,10 @@ W="$STAGE/win/Unplugged"
 publish win-x64 "$W"
 add_model "$W/models"
 add_licenses "$W"
+# The AI engine's Windows files need Microsoft's Visual C++ runtime; ship it app-local so fresh
+# Windows installs work without a separate (admin-only) redistributable install.
+[ -f "$ROOT/build/tools/vcruntime/vcruntime140.dll" ] || "$ROOT/build/get-vcruntime.sh"
+cp "$ROOT"/build/tools/vcruntime/*.dll "$W/"
 makensis -V2 -DVERSION="$VERSION" -DSRC="$W" -DOUT="$DIST/Unplugged-Setup-Windows-x64.exe" \
   -DICON="$ICONS/unplugged.ico" "$ROOT/build/installer/unplugged.nsi"
 

@@ -3,6 +3,11 @@ using Unplugged.Core;
 // Model check: loads a model through the app's own InferenceService and runs the tour's prompts.
 //   dotnet run -- <path-to.gguf>            (GPU if available)
 //   UNPLUGGED_FORCE_CPU=1 dotnet run -- …   (CPU only)
+if (args.Length > 0 && args[0] == "--net")
+{
+    Console.WriteLine($"online={NetworkStatusWatcher.Probe()}  connection={NetworkStatusWatcher.ActiveKind()}");
+    return;
+}
 var modelPath = args.Length > 0 ? args[0] : ModelLocator.Find() ?? throw new Exception("no model");
 var prompts = args.Length > 1 ? args[1..] : new[]
 {

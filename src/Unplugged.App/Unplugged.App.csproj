@@ -7,7 +7,7 @@
     <AssemblyName>Unplugged</AssemblyName>
     <RootNamespace>Unplugged.App</RootNamespace>
     <ApplicationIcon>Assets/unplugged.ico</ApplicationIcon>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Product>Unplugged</Product>
     <Company>Keep AI Local</Company>
     <Copyright>Copyright (c) 2026 Keep AI Local (MIT)</Copyright>
