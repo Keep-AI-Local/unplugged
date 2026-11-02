@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Records the raw footage for the hero video, for real:
 #   1. starts Unplugged in hands-free demo mode (CPU only, records its own window)
-#   2. after a few seconds online, turns this computer's networking OFF (nmcli)
+#   2. after a few seconds online, disconnects this computer's internet connection (nmcli)
 #   3. tries to load a website in Chrome while offline and screenshots the failure
 #   4. the app notices it's offline, types a prompt, and the AI answers
 #   5. networking is turned back ON, always, even if anything fails
@@ -14,14 +14,20 @@ APPDIR="$ROOT/src/Unplugged.App/bin/Debug/net10.0"
 mkdir -p "$OUT"
 log(){ echo "[$(date +%T)] $*" | tee -a "$OUT/record.log"; }
 
+# Disconnect ONLY the device that carries the internet (e.g. the wired port or Wi-Fi), not all of
+# NetworkManager: "nmcli networking off" also tears down virtual bridges such as libvirt's virbr0,
+# which knocks virtual machines offline until the bridge is repaired by hand.
+DEV="$(ip route show default | awk '{print $5; exit}')"
+[ -n "$DEV" ] || { echo "no default route: already offline?"; exit 1; }
+
 restore() {
-  nmcli networking on 2>/dev/null
-  log "networking ON requested"
+  nmcli device connect "$DEV" >/dev/null 2>&1
+  log "reconnect of $DEV requested"
 }
 trap restore EXIT INT TERM
 
-# Independent safety net: even if this script is killed, networking comes back within 3 minutes.
-setsid nohup sh -c 'sleep 180; nmcli networking on' >/dev/null 2>&1 &
+# Independent safety net: even if this script is killed, the connection comes back within 3 minutes.
+setsid nohup sh -c "sleep 180; nmcli device connect '$DEV'" >/dev/null 2>&1 &
 
 log "starting app (demo mode, CPU only)"
 ( cd "$APPDIR" && UNPLUGGED_DEMO=1 UNPLUGGED_FORCE_CPU=1 UNPLUGGED_RECORD_DIR="$OUT" ./Unplugged >"$OUT/app.log" 2>&1 ) &
@@ -32,8 +38,8 @@ grep -q " ready" "$OUT/events.txt" 2>/dev/null || { log "app never became ready"
 log "app ready; filming 5 s online"
 sleep 5
 
-log "turning networking OFF"
-nmcli networking off
+log "disconnecting $DEV (internet OFF)"
+nmcli device disconnect "$DEV"
 sleep 2
 log "connectivity now: $(nmcli networking connectivity)"
 
