@@ -187,3 +187,11 @@ main > section.band > * { max-width: var(--max); margin: 0 auto; }
 .win-grid li { margin-bottom: 12px; }
 .win-grid img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
 @media (max-width: 760px) { .win-grid { grid-template-columns: 1fr; } }
+
+/* the maker's other app, under the community links */
+.maker-app { display: flex; flex-direction: column; gap: 6px; margin-top: 22px; padding: 22px 24px; text-decoration: none; color: var(--text);
+  background: var(--accent-dim); border: 2px solid var(--accent); border-radius: 18px; }
+.maker-app:hover { background: #18403A; }
+.maker-eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .04em; color: var(--muted); }
+.maker-app strong { font-size: 24px; font-weight: 900; }
+.maker-app code { color: var(--accent); font-size: 17px; }
