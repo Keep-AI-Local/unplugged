@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
-# Builds the three Unplugged downloads into dist/:
-#   Unplugged-Windows-x64.zip            (folder with Unplugged.exe)
-#   Unplugged-macOS-AppleSilicon.zip      (Unplugged.app; ad-hoc signed by the .NET SDK, not notarized)
-#   Unplugged-Linux-x64.tar.gz            (folder with the Unplugged program)
+# Builds the three ONE-CLICK Unplugged downloads into dist/:
+#   Unplugged-Setup-Windows-x64.exe       setup program: installs per-user (no admin prompt), adds shortcuts, opens the app
+#   Unplugged-macOS-AppleSilicon.dmg      disk image: drag Unplugged into Applications (ad-hoc signed, not notarized)
+#   Unplugged-Linux-x64.AppImage          single file: make it executable once, then double-click
 #   SHA256SUMS.txt
-# Each one bundles the AI model, its Gemma license files, and a "README-FIRST" with opening instructions.
-# Builds are NOT code-signed/notarized (by choice): the README and website explain the OS warning.
+# Each bundles the AI model and its Gemma license files. Builds are NOT code-signed/notarized (by choice):
+# the website explains the one-time OS warning.
+#
+# Needs: dotnet, makensis (apt: nsis), mksquashfs (squashfs-tools), mkfs.hfsplus (hfsprogs), and
+# build/tools/runtime-x86_64 (AppImage type2 runtime from github.com/AppImage/type2-runtime).
+# The Mac disk image is assembled on a loop mount, so the build asks for your password once (sudo -A).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DIST="$ROOT/dist"; STAGE="$DIST/stage"
 VERSION="$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' "$ROOT/src/Unplugged.App/Unplugged.App.csproj")"
 MODEL="$ROOT/models/gemma-3-1b-it-qat-Q4_0.gguf"
+ICONS="$ROOT/src/Unplugged.App/Assets"
+APPIMAGE_RUNTIME="$ROOT/build/tools/runtime-x86_64"
 [ -f "$MODEL" ] || "$ROOT/build/get-model.sh"
+[ -f "$APPIMAGE_RUNTIME" ] || { echo "missing $APPIMAGE_RUNTIME (see header)"; exit 1; }
 rm -rf "$DIST"; mkdir -p "$STAGE"
 
 publish() {   # $1 = runtime id, $2 = output dir
   dotnet publish "$ROOT/src/Unplugged.App" -c Release -r "$1" --self-contained true \
-    -p:DebugType=none -p:DebugSymbols=false -o "$2" -v q
+    -p:DebugType=none -p:DebugSymbols=false -o "$2" -v q 2>&1 | grep -v "warning CS0618" || true
   # keep only this platform's AI engine (LLamaSharp ships all 7 platforms in every build)
   find "$2/runtimes" -mindepth 1 -maxdepth 1 -type d ! -name "$1" -exec rm -rf {} +
-  # Intel-Mac "rosetta2" variant is not needed on Apple Silicon
   rm -rf "$2/runtimes/osx-arm64/native/rosetta2"
 }
 
@@ -28,37 +34,60 @@ add_model() {   # $1 = models dir
   cp "$MODEL" "$ROOT/models/NOTICE.txt" "$ROOT/models/GEMMA_TERMS_OF_USE.txt" "$ROOT/models/GEMMA_PROHIBITED_USE_POLICY.txt" "$1/"
 }
 
-add_docs() {    # $1 = dir, $2 = readme source
+add_licenses() {   # $1 = dir
   cp "$ROOT/LICENSE" "$1/LICENSE.txt"
   cp "$ROOT/THIRD_PARTY_NOTICES.md" "$1/THIRD_PARTY_NOTICES.md"
-  cp "$2" "$1/README-FIRST.txt"
 }
 
-# ---------- Windows ----------
-echo ">> Windows"
+# ---------- Windows: setup program ----------
+echo ">> Windows setup"
 W="$STAGE/win/Unplugged"
 publish win-x64 "$W"
 add_model "$W/models"
-add_docs "$W" "$ROOT/build/readme/windows.txt"
-(cd "$STAGE/win" && zip -q -r -9 "$DIST/Unplugged-Windows-x64.zip" Unplugged)
+add_licenses "$W"
+makensis -V2 -DVERSION="$VERSION" -DSRC="$W" -DOUT="$DIST/Unplugged-Setup-Windows-x64.exe" \
+  -DICON="$ICONS/unplugged.ico" "$ROOT/build/installer/unplugged.nsi"
 
-# ---------- Linux ----------
-echo ">> Linux"
-L="$STAGE/linux/Unplugged"
-publish linux-x64 "$L"
-add_model "$L/models"
-add_docs "$L" "$ROOT/build/readme/linux.txt"
-cp "$ROOT/src/Unplugged.App/Assets/unplugged.png" "$L/unplugged.png"
-chmod +x "$L/Unplugged"
-(cd "$STAGE/linux" && tar -czf "$DIST/Unplugged-Linux-x64.tar.gz" Unplugged)
+# ---------- Linux: AppImage ----------
+echo ">> Linux AppImage"
+A="$STAGE/linux/Unplugged.AppDir"
+publish linux-x64 "$A/usr/lib/unplugged"
+add_model "$A/usr/lib/unplugged/models"
+add_licenses "$A/usr/lib/unplugged"
+chmod +x "$A/usr/lib/unplugged/Unplugged"
+cat > "$A/AppRun" <<'RUN'
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "$0")")"
+exec "$HERE/usr/lib/unplugged/Unplugged" "$@"
+RUN
+chmod +x "$A/AppRun"
+cat > "$A/unplugged.desktop" <<DESK
+[Desktop Entry]
+Type=Application
+Name=Unplugged
+GenericName=Offline AI demo
+Comment=AI that lives entirely on your computer
+Exec=Unplugged
+Icon=unplugged
+Categories=Education;Utility;
+Terminal=false
+X-AppImage-Version=$VERSION
+DESK
+cp "$ICONS/unplugged-256.png" "$A/unplugged.png"
+ln -s unplugged.png "$A/.DirIcon"
+mksquashfs "$A" "$STAGE/linux/app.squashfs" -root-owned -noappend -comp zstd -quiet -no-progress
+cat "$APPIMAGE_RUNTIME" "$STAGE/linux/app.squashfs" > "$DIST/Unplugged-Linux-x64.AppImage"
+chmod +x "$DIST/Unplugged-Linux-x64.AppImage"
 
-# ---------- macOS (Apple Silicon) ----------
-echo ">> macOS"
-APP="$STAGE/mac/Unplugged.app"
+# ---------- macOS: .dmg (drag to Applications) ----------
+echo ">> macOS disk image"
+M="$STAGE/mac"
+APP="$M/Unplugged.app"
 mkdir -p "$APP/Contents/Resources"
 publish osx-arm64 "$APP/Contents/MacOS"
 add_model "$APP/Contents/Resources/models"
-cp "$ROOT/src/Unplugged.App/Assets/unplugged.icns" "$APP/Contents/Resources/unplugged.icns"
+add_licenses "$APP/Contents/Resources"
+cp "$ICONS/unplugged.icns" "$APP/Contents/Resources/unplugged.icns"
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -77,9 +106,16 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 </dict></plist>
 PLIST
 chmod +x "$APP/Contents/MacOS/Unplugged"
-cp "$ROOT/build/readme/mac.txt" "$STAGE/mac/README-FIRST.txt"
-cp "$ROOT/LICENSE" "$STAGE/mac/LICENSE.txt"
-(cd "$STAGE/mac" && zip -q -r -y -9 "$DIST/Unplugged-macOS-AppleSilicon.zip" Unplugged.app README-FIRST.txt LICENSE.txt)
+cp "$ROOT/build/readme/mac-dmg.txt" "$M/If your Mac warns you.txt"
+SIZE_MB=$(( $(du -sm "$M" | cut -f1) + 60 ))
+IMG="$DIST/Unplugged-macOS-AppleSilicon.dmg"
+truncate -s "${SIZE_MB}M" "$IMG"
+mkfs.hfsplus -v "Unplugged" "$IMG" >/dev/null
+MNT="$(mktemp -d)"
+sudo -A sh -c "mount -t hfsplus -o loop,rw '$IMG' '$MNT' && cp -a '$APP' '$MNT/' && cp '$M/If your Mac warns you.txt' '$MNT/' \
+  && ln -s /Applications '$MNT/Applications' && chown -R 501:20 '$MNT/Unplugged.app' '$MNT/If your Mac warns you.txt' \
+  && sync && umount '$MNT'"
+rmdir "$MNT"
 
 # ---------- checksums ----------
 (cd "$DIST" && sha256sum Unplugged-* > SHA256SUMS.txt)

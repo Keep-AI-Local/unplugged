@@ -1,0 +1,19 @@
+UNPLUGGED: AI that lives entirely on your computer · keepailocal.org
+
+1. Drag "Unplugged" onto the "Applications" folder next to it.
+2. Open Unplugged from your Applications folder (or Launchpad).
+
+THE FIRST TIME, YOUR MAC WILL WARN YOU. HERE'S WHAT TO DO:
+macOS says it can't verify Unplugged ("Apple could not verify..." / "not opened").
+  1. Click "Done" (don't move it to the Trash).
+  2. Open System Settings -> Privacy & Security.
+  3. Scroll down; next to "Unplugged was blocked...", click "Open Anyway".
+  4. Enter your Mac password and click "Open Anyway" again.
+Only needed once.
+
+If instead it says the app "is damaged", open Terminal, paste this line and press Return:
+  xattr -dr com.apple.quarantine /Applications/Unplugged.app
+
+Why: Unplugged isn't notarized by Apple (a $99/year membership), because it's a free project with
+nothing to sell. The warning means "Apple doesn't know who made this", not "this is dangerous".
+The code is public: github.com/Keep-AI-Local/unplugged

@@ -4,9 +4,9 @@
   const REPO = "Keep-AI-Local/unplugged";            // GitHub owner/repository
   const DOWNLOADS_LIVE = true;                      // set to true once the first GitHub release exists
   const ASSETS = {                                  // file names attached to every GitHub release
-    windows: { file: "Unplugged-Windows-x64.zip",           label: "Download for Windows" },
-    mac:     { file: "Unplugged-macOS-AppleSilicon.zip",    label: "Download for Mac" },
-    linux:   { file: "Unplugged-Linux-x64.tar.gz",          label: "Download for Linux" },
+    windows: { file: "Unplugged-Setup-Windows-x64.exe",     label: "Download for Windows" },
+    mac:     { file: "Unplugged-macOS-AppleSilicon.dmg",    label: "Download for Mac" },
+    linux:   { file: "Unplugged-Linux-x64.AppImage",        label: "Download for Linux" },
   };
   // ---------------------
 

@@ -103,9 +103,9 @@
       <a class="btn primary huge" id="dl-primary" href="#">Download for your computer</a>
       <p class="small muted" id="dl-primary-note">About 750 MB · free · no sign-up</p>
       <div class="dl-others">
-        <a class="dl-os" data-os="windows" href="#"><strong>Windows</strong><span>Windows 10 or 11 · 64-bit</span></a>
-        <a class="dl-os" data-os="mac" href="#"><strong>Mac</strong><span>Apple Silicon (M1 or newer)</span></a>
-        <a class="dl-os" data-os="linux" href="#"><strong>Linux</strong><span>64-bit · .tar.gz</span></a>
+        <a class="dl-os" data-os="windows" href="#"><strong>Windows</strong><span>Windows 10 or 11 · setup program</span></a>
+        <a class="dl-os" data-os="mac" href="#"><strong>Mac</strong><span>Apple Silicon (M1 or newer) · .dmg</span></a>
+        <a class="dl-os" data-os="linux" href="#"><strong>Linux</strong><span>64-bit · AppImage</span></a>
       </div>
       <p class="small muted center">Downloads come straight from <a id="gh-releases" href="#">GitHub</a>, where you can also read every line of the source code. <a href="#verify">Check the download's fingerprint</a>.</p>
     </div>
@@ -114,9 +114,9 @@
       <h3>Heads up: your computer will warn you. We know.</h3>
       <p>When you open Unplugged the first time, Windows or macOS will show a scary-looking warning. That's because the app isn't "code-signed", which costs hundreds of dollars every year. Unplugged is free and has nothing to sell, so we skipped it. The warning means <em>"we don't know who made this"</em>, not <em>"this is dangerous"</em>. The code is public on GitHub for anyone to check.</p>
       <div class="three">
-        <div class="card"><h4>Windows</h4><p>"Windows protected your PC" →<br>click <strong>More info</strong>, then <strong>Run anyway</strong>.</p><p class="small muted">Unzip first: right-click the zip → Extract All.</p></div>
-        <div class="card"><h4>Mac</h4><p>"Apple could not verify…" → click <strong>Done</strong>, then <strong>System Settings → Privacy &amp; Security</strong> → <strong>Open Anyway</strong>.</p><p class="small muted">Only needed the first time.</p></div>
-        <div class="card"><h4>Linux</h4><p>No warning. Extract it, open the folder, and double-click <strong>Unplugged</strong> (or run <code>./Unplugged</code>).</p></div>
+        <div class="card"><h4>Windows</h4><p>Open the setup file. At "Windows protected your PC", click <strong>More info</strong>, then <strong>Run anyway</strong>.</p><p class="small muted">It installs and opens Unplugged by itself. No admin password needed.</p></div>
+        <div class="card"><h4>Mac</h4><p>Open the .dmg and drag Unplugged into <strong>Applications</strong>. At "Apple could not verify…", click <strong>Done</strong>, then <strong>System Settings → Privacy &amp; Security</strong> → <strong>Open Anyway</strong>.</p><p class="small muted">Only needed the first time.</p></div>
+        <div class="card"><h4>Linux</h4><p>No warning. Right-click the AppImage → <strong>Properties</strong> → allow it to <strong>run as a program</strong>, then double-click it.</p><p class="small muted">Or in a terminal: <code>chmod +x Unplugged*.AppImage</code></p></div>
       </div>
     </div>
 
