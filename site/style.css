@@ -178,3 +178,12 @@ main > section.band > * { max-width: var(--max); margin: 0 auto; }
 .checklist { list-style: none; padding: 0; margin: 16px 0 20px; display: grid; gap: 12px; }
 .checklist li { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 16px 58px; }
 .checklist li::before { content: "✓"; position: absolute; left: 18px; top: 14px; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: var(--ink); font-weight: 900; display: grid; place-items: center; font-size: 16px; }
+
+/* Windows: shown right after clicking the download */
+.win-steps { text-align: left; max-width: 980px; margin: 26px auto 8px; background: var(--accent-dim); border: 2px solid var(--accent); border-radius: 20px; padding: 24px 28px; }
+.win-steps h3 { font-size: 24px; font-weight: 900; }
+.win-grid { display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
+.win-grid ol { margin: 0; padding-left: 22px; font-size: 18px; }
+.win-grid li { margin-bottom: 12px; }
+.win-grid img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
+@media (max-width: 760px) { .win-grid { grid-template-columns: 1fr; } }

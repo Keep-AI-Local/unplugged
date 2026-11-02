@@ -102,6 +102,19 @@
     <div id="dl-live" class="dl-main">
       <a class="btn primary huge" id="dl-primary" href="#">Download for your computer</a>
       <p class="small muted" id="dl-primary-note">About 750 MB · free · no sign-up</p>
+      <div id="win-steps" class="win-steps" hidden>
+        <h3>Your download has started. Windows will ask you to confirm a few times. Here's exactly what to click:</h3>
+        <div class="win-grid">
+          <ol>
+            <li>Edge shows <em>"Unplugged-Setup… isn't commonly downloaded"</em>. Click the <strong>•••</strong> next to it, then <strong>Keep</strong>.</li>
+            <li>On <em>"Make sure you trust…"</em>, click the small <strong>arrow next to Delete</strong>, then <strong>Keep anyway</strong>. (See the picture.)</li>
+            <li>Open the downloaded file. At <em>"Windows protected your PC"</em>, click <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
+            <li>That's it: Unplugged installs and opens by itself.</li>
+          </ol>
+          <img src="assets/edge-keep-anyway.png" width="348" height="422" alt="Edge's 'Make sure you trust' box: click the arrow next to Delete, then Keep anyway">
+        </div>
+        <p class="small muted">Using Chrome? It says "isn't commonly downloaded" too: click <strong>Keep</strong>. Want to help? Click <strong>"Report this app as safe"</strong> in that box. It helps the warning disappear for everyone.</p>
+      </div>
       <div class="dl-others">
         <a class="dl-os" data-os="windows" href="#"><strong>Windows</strong><span>Windows 10 or 11 · setup program</span></a>
         <a class="dl-os" data-os="mac" href="#"><strong>Mac</strong><span>Apple Silicon (M1 or newer) · .dmg</span></a>
@@ -114,7 +127,7 @@
       <h3>Heads up: your computer will warn you. We know.</h3>
       <p>When you open Unplugged the first time, Windows or macOS will show a scary-looking warning. That's because the app isn't "code-signed", which costs hundreds of dollars every year. Unplugged is free and has nothing to sell, so we skipped it. The warning means <em>"we don't know who made this"</em>, not <em>"this is dangerous"</em>. The code is public on GitHub for anyone to check.</p>
       <div class="three">
-        <div class="card"><h4>Windows</h4><p>Open the setup file. At "Windows protected your PC", click <strong>More info</strong>, then <strong>Run anyway</strong>.</p><p class="small muted">It installs and opens Unplugged by itself. No admin password needed.</p></div>
+        <div class="card"><h4>Windows</h4><p>When Edge says the download "isn't commonly downloaded": <strong>•••</strong> → <strong>Keep</strong>, then the <strong>arrow next to Delete</strong> → <strong>Keep anyway</strong>. Open the file. At "Windows protected your PC": <strong>More info</strong> → <strong>Run anyway</strong>.</p><p class="small muted">It then installs and opens Unplugged by itself. No admin password needed.</p></div>
         <div class="card"><h4>Mac</h4><p>Open the .dmg and drag Unplugged into <strong>Applications</strong>. At "Apple could not verify…", click <strong>Done</strong>, then <strong>System Settings → Privacy &amp; Security</strong> → <strong>Open Anyway</strong>.</p><p class="small muted">Only needed the first time.</p></div>
         <div class="card"><h4>Linux</h4><p>No warning. Right-click the AppImage → <strong>Properties</strong> → allow it to <strong>run as a program</strong>, then double-click it.</p><p class="small muted">Or in a terminal: <code>chmod +x Unplugged*.AppImage</code></p></div>
       </div>

@@ -31,9 +31,15 @@
     if (k === os) a.classList.add("mine");
   });
 
+  // Windows: the moment the download starts, show how to get past Edge's / Windows' confirmations.
+  const winSteps = document.getElementById("win-steps");
+  const showWinSteps = () => { if (winSteps) { winSteps.hidden = false; winSteps.scrollIntoView({ behavior: "smooth", block: "center" }); } };
+  document.querySelectorAll('.dl-os[data-os="windows"]').forEach((a) => a.addEventListener("click", showWinSteps));
+
   const primary = document.getElementById("dl-primary");
   if (primary) {
     if (os) { primary.href = fileUrl(ASSETS[os].file); primary.textContent = ASSETS[os].label; }
+    if (os === "windows") primary.addEventListener("click", showWinSteps);
     else { primary.href = latest; primary.textContent = "See all downloads"; }
   }
 
